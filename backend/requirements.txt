@@ -1,10 +1,12 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic
 scikit-learn
 spacy
-sqlite3-api
 python-multipart
 python-dotenv
 pandas
 numpy
+pdfplumber
+docx2txt
+requests
