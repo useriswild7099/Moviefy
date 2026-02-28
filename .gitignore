@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.env
+
+# Node
+node_modules/
+dist/
+
+# Database
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / Temp
+*.log
+test_optimization.py
+quick_test.py
+test_results_clean.txt
+optimization_results.txt
+
+# Gemini
+.gemini/

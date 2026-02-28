@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Gabarito:wght@400;500;600;700&display=swap');
+
+body {
+    background-color: #ffffff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Lenis Smooth Scrolling */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* Utilities */
+.shadow-soft {
+  box-shadow: 0 4px 22px rgba(116, 130, 151, 0.15);
+}
+
+.hero-title-gradient {
+  background: linear-gradient(180deg, #1C1C1E 0%, #4A4A4F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeReverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes cloudDrift {
+  0% { transform: translateX(0) scale(1.02); }
+  50% { transform: translateX(-20px) scale(1); }
+  100% { transform: translateX(0) scale(1.02); }
+}
+
+.animate-cloud-drift {
+  animation: cloudDrift 20s ease-in-out infinite;
+}
+
+.marquee-container {
+  overflow: hidden;
+  width: 100vw;
+  margin-left: -50vw;
+  left: 50%;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-reverse {
+  display: flex;
+  width: max-content;
+  animation: marqueeReverse 45s linear infinite;
+  will-change: transform;
+}
+
+/* Stagger Text Reveal */
+.scrub-char {
+  will-change: opacity;
+}
+
+/* Hero clip-path animation target */
+.clip-hero { clip-path: inset(50% round 32px); }
+@media (max-width: 1200px) { .clip-hero { clip-path: inset(50% round 28px); } }
+@media (max-width: 1024px) { .clip-hero { clip-path: inset(50% round 24px); } }
+@media (max-width: 768px) { .clip-hero { clip-path: inset(50% round 20px); } }
+
+/* ── Smooth Page Transitions ── */
+
+/* Fade in + slide up — for sections and results */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in — for overlays and backdrops */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Scale in — for modals and cards */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Fade out */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Utility classes */
+.animate-fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Staggered children animation */
+.animate-stagger > * {
+  opacity: 0;
+  animation: fadeSlideUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.animate-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.animate-stagger > *:nth-child(2) { animation-delay: 0.12s; }
+.animate-stagger > *:nth-child(3) { animation-delay: 0.19s; }
+.animate-stagger > *:nth-child(4) { animation-delay: 0.26s; }
+.animate-stagger > *:nth-child(5) { animation-delay: 0.33s; }
+.animate-stagger > *:nth-child(6) { animation-delay: 0.40s; }
+.animate-stagger > *:nth-child(7) { animation-delay: 0.47s; }
+.animate-stagger > *:nth-child(8) { animation-delay: 0.54s; }
+.animate-stagger > *:nth-child(9) { animation-delay: 0.61s; }
+.animate-stagger > *:nth-child(10) { animation-delay: 0.68s; }
+
+/* ── Neumorphism Shadows ── */
+
+/* Neumorphism on white backgrounds */
+.neu-white {
+  box-shadow:
+    6px 6px 14px rgba(0, 0, 0, 0.06),
+    -6px -6px 14px rgba(255, 255, 255, 0.9);
+}
+.neu-white:hover {
+  box-shadow:
+    8px 8px 18px rgba(0, 0, 0, 0.08),
+    -8px -8px 18px rgba(255, 255, 255, 1);
+}
+
+/* Neumorphism on beige/warm backgrounds */
+.neu-beige {
+  box-shadow:
+    6px 6px 14px rgba(180, 165, 145, 0.25),
+    -6px -6px 14px rgba(255, 250, 240, 0.8);
+}
+.neu-beige:hover {
+  box-shadow:
+    8px 8px 18px rgba(180, 165, 145, 0.3),
+    -8px -8px 18px rgba(255, 250, 240, 0.9);
+}
+
+/* Neumorphism on blue/cool backgrounds */
+.neu-blue {
+  box-shadow:
+    6px 6px 14px rgba(160, 180, 200, 0.3),
+    -6px -6px 14px rgba(240, 248, 255, 0.8);
+}
+.neu-blue:hover {
+  box-shadow:
+    8px 8px 18px rgba(160, 180, 200, 0.35),
+    -8px -8px 18px rgba(240, 248, 255, 0.9);
+}
+
+/* Neumorphism on dark backgrounds */
+.neu-dark {
+  box-shadow:
+    6px 6px 16px rgba(0, 0, 0, 0.4),
+    -6px -6px 16px rgba(60, 70, 80, 0.15);
+}
+
+/* Neumorphism inset (pressed state) */
+.neu-inset {
+  box-shadow:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.06),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+}
+
+/* Smooth neumorphism transition */
+.neu-transition {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Mobile-specific touch enhancements */
+@media (max-width: 768px) {
+  .neu-white, .neu-beige, .neu-blue {
+    box-shadow:
+      4px 4px 10px rgba(0, 0, 0, 0.05),
+      -4px -4px 10px rgba(255, 255, 255, 0.8);
+  }
+}
+
+

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reasonal Clone - Reusable Template</title>
+    
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.35/dist/lenis.min.js"></script>
+
+    <!-- Tailwind CDN with Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        gabarito: ['"Gabarito"', "sans-serif"],
+                        archivo: ['"Archivo"', "sans-serif"],
+                    },
+                    colors: {
+                        dark: {
+                            slate: '#424647',
+                            charcoal: '#181D1F',
+                            active: '#3A4248',
+                        },
+                        pastel: {
+                            peach: '#FDDBCE',
+                            beige: '#EAE4DC',
+                            lavender: '#D7CEF0',
+                            blue: '#DBE5F0',
+                            sage: '#D5E2DA',
+                            rose: '#F4E1E1',
+                            lime: '#E4EED2',
+                            yellow: '#F6E7CF',
+                            coral: '#FD956D',
+                        },
+                        gradient: {
+                            heroStart: '#15aeea',
+                            heroEnd: '#73cef2'
+                        }
+                    },
+                    borderRadius: {
+                        'xl-card': '20px',
+                        '2xl-card': '24px',
+                        '3xl-card': '28px',
+                        '4xl-card': '32px',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 22px rgba(116, 130, 151, 0.15)'
+                    },
+                    letterSpacing: {
+                        'tight-title': '-0.015em',
+                        'wide-kicker': '0.1em',
+                        'body': '0.025em'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS (Gradients, Animations, Lens) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Gabarito:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #ffffff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Lenis Smooth Scrolling */
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        /* Custom Gradients / Animations */
+        .hero-title-gradient {
+            background: linear-gradient(169.245deg, rgba(3, 123, 181, 0.85) 20.481%, rgba(3, 120, 176, 0.90) 73.8%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes cloud-drift {
+            0%, 100% { transform: translate(-50%) translate(0); }
+            25% { transform: translate(-50%) translate(12px); }
+            50% { transform: translate(-50%) translate(-10px); }
+            75% { transform: translate(-50%) translate(6px); }
+        }
+
+        .animate-cloud-drift { animation: cloud-drift 20s ease-in-out infinite; }
+
+        /* Marquee setup */
+        .marquee-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            will-change: transform;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        .clip-hero { clip-path: inset(50% round 32px); }
+        @media (max-width: 1200px) { .clip-hero { clip-path: inset(50% round 28px); } }
+        @media (max-width: 1024px) { .clip-hero { clip-path: inset(50% round 24px); } }
+        @media (max-width: 768px) { .clip-hero { clip-path: inset(50% round 20px); } }
+    </style>
+</head>
+<body class="font-sans text-dark-charcoal bg-white antialiased">
+    
+    <!-- Navbar -->
+    <header class="fixed inset-x-0 top-0 z-[1000] p-8 max-md:p-6 transition-transform duration-500" id="navbar">
+        <div class="relative mx-auto max-w-[1200px] flex justify-between items-center py-2 pr-2 pl-3 bg-white/85 backdrop-blur-md rounded-full shadow-soft transition-all duration-300">
+            <a href="#" class="flex items-center z-10">
+                <img src="./assets/logo3.svg" alt="Reasonal Logo" class="w-[134px] h-8">
+            </a>
+            <nav class="absolute inset-0 flex items-center justify-center max-md:hidden">
+                <a href="#about" class="px-5 py-2 rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-[rgba(24,29,31,0.1)] transition-colors duration-150">About</a>
+                <a href="#lessons" class="px-5 py-2 rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-[rgba(24,29,31,0.1)] transition-colors duration-150">Lessons</a>
+                <a href="#faq" class="px-5 py-2 rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-[rgba(24,29,31,0.1)] transition-colors duration-150">FAQ</a>
+            </nav>
+            <a href="#" class="relative inline-flex items-center justify-center px-5 py-2 bg-dark-charcoal hover:bg-dark-active active:bg-dark-active rounded-full text-white font-archivo font-medium text-[18px] max-md:text-[16px] tracking-body z-10 transition-colors duration-150">
+                <span>Try Now</span>
+            </a>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <main class="h-screen max-h-[1440px] p-4 max-md:p-3 flex flex-col pt-24">
+            <section id="hero" class="hero-wrapper relative w-full max-w-[1440px] h-full flex-1 mx-auto bg-gradient-to-b from-gradient-heroStart to-gradient-heroEnd rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-hidden clip-hero flex items-center justify-center">
+                <!-- BG Clouds -->
+                <div class="absolute top-[5%] left-1/2 -translate-x-1/2 w-[2048px] max-[1200px]:w-[1400px] max-md:w-[1600px] z-[1] pointer-events-none opacity-0 hero-cloud-1">
+                    <img src="./assets/cloud.webp" alt="Clouds" class="w-full h-auto animate-cloud-drift">
+                </div>
+                
+                <div class="relative z-[2] flex flex-col items-center justify-center text-center opacity-0 scale-110 hero-content">
+                    <span class="font-gabarito font-semibold text-[18px] max-md:text-[14px] leading-[24px] tracking-wide-kicker uppercase text-[#037BB5] mb-3">Picture this</span>
+                    <h1 class="font-archivo font-semibold text-[128px] leading-[140px] max-[1200px]:text-[8vw] max-[1200px]:leading-[1.1] max-md:text-[clamp(40px,12vw,72px)] tracking-tight-title hero-title-gradient">
+                        Like Duolingo,<br>but for<br>critical thinking
+                    </h1>
+                </div>
+
+                <div class="absolute top-[42%] left-1/2 w-[2048px] max-[1200px]:w-[1400px] max-md:w-[1600px] z-[3] pointer-events-none opacity-0 hero-cloud-2">
+                    <img src="./assets/cloud-protect-2.webp" alt="Foreground Clouds" class="w-full h-auto">
+                </div>
+            </section>
+        </main>
+
+        <!-- About Section -->
+        <section id="about" class="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3">
+            <div class="mx-auto max-w-[1440px]">
+                <div class="min-h-[760px] max-[1200px]:min-h-[640px] max-lg:min-h-[500px] max-md:min-h-[560px] rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex items-center justify-center bg-pastel-peach">
+                    
+                    <!-- Floating Icons -->
+                    <div class="absolute inset-0 pointer-events-none z-[3]">
+                        <div class="why-image absolute rounded-[16px] max-lg:rounded-[12px] border-2 border-white shadow-soft bg-pastel-beige overflow-hidden opacity-0 scale-75" style="left:3.3%;top:5%;width:160px;height:160px"><img src="./assets/favicon-32.png" alt="" class="object-cover w-full h-full"></div>
+                        <div class="why-image absolute rounded-[16px] max-lg:rounded-[12px] border-2 border-white shadow-soft bg-pastel-beige overflow-hidden opacity-0 scale-75" style="right:9.5%;top:7%;width:200px;height:200px"><img src="./assets/human.webp" alt="" class="object-cover w-full h-full"></div>
+                    </div>
+
+                    <div class="relative z-[2] flex flex-col items-center gap-6 py-[80px] px-12 max-w-[820px] text-center">
+                        <h2 class="font-gabarito font-semibold text-[18px] max-md:text-[14px] leading-[24px] tracking-wide-kicker uppercase text-dark-charcoal">Why reasonal?</h2>
+                        <p class="font-archivo font-normal text-[32px] max-[1200px]:text-[24px] max-md:text-[20px] leading-[40px] tracking-tight-title text-dark-charcoal stagger-text">
+                            As discerning adults, we're expected to think clearly, evaluate sources, resist manipulation, and make good decisions.
+                        </p>
+                        <div class="flex items-center justify-center my-2">
+                            <img src="./assets/logo-simple-black.svg" class="w-10 h-10" alt="Icon">
+                        </div>
+                        <p class="font-archivo font-normal text-[32px] max-[1200px]:text-[24px] max-md:text-[20px] leading-[40px] tracking-tight-title text-dark-charcoal stagger-text">
+                            With Reasonal, we're changing that.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Matrix -->
+        <section class="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3">
+            <div class="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-3">
+                
+                <!-- Antidote Card (Span 5) -->
+                <div class="col-span-5 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-lg:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-beige">
+                    <div class="absolute right-[8%] top-[44%] w-[107%] aspect-square pointer-events-none">
+                        <div class="w-full h-full rounded-full bg-pastel-coral"></div>
+                    </div>
+                    <div class="min-h-[220px] py-[48px] px-[48px] flex flex-col gap-4 flex-shrink-0 z-[4]">
+                        <h2 class="font-archivo font-semibold text-[40px] leading-[48px] tracking-tight-title text-dark-charcoal stagger-text">The antidote to brain rot</h2>
+                        <p class="font-archivo font-normal text-[20px] leading-[28px] tracking-body text-dark-slate stagger-text">Reasonal brings ideas that actively engage your brain, not pre-digested material for passive consumption.</p>
+                    </div>
+                    <div class="flex-1 flex items-start min-h-0 z-[2]">
+                        <img src="./assets/phonehand.webp" alt="App Preview" class="w-full h-auto object-contain object-top">
+                    </div>
+                </div>
+
+                <!-- Fundamental Skills (Span 7) -->
+                <div class="col-span-7 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-lg:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-lavender">
+                    <div class="min-h-[220px] py-[48px] px-[48px] flex flex-col gap-4 flex-shrink-0 z-[4]">
+                        <h2 class="font-archivo font-semibold text-[40px] leading-[48px] tracking-tight-title text-dark-charcoal stagger-text">Fundamental skills you'll use every day</h2>
+                        <p class="font-archivo font-normal text-[20px] leading-[28px] tracking-body text-dark-slate stagger-text">Critical thinking requires a collection of specific skills you apply in specific situations. That's what Reasonal is for.</p>
+                    </div>
+                    <div class="flex-1 flex items-end justify-center min-h-0 z-[2]">
+                        <img src="./assets/tagcloud.webp" alt="Skill tags" class="max-h-full w-auto object-contain">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- More Features Matrix -->
+        <section class="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3">
+            <div class="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-3">
+                
+                <!-- Interactive Lessons (Span 7) -->
+                <div class="col-span-7 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-lg:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-blue">
+                    <div class="min-h-[220px] py-[48px] px-[48px] flex flex-col gap-4 flex-shrink-0 z-[4]">
+                        <h2 class="font-archivo font-semibold text-[40px] leading-[48px] tracking-tight-title text-dark-charcoal stagger-text">Interactive non-linear lessons</h2>
+                        <p class="font-archivo font-normal text-[20px] leading-[28px] tracking-body text-dark-slate stagger-text">Our lessons are built around notable studies or events, and you explore them by following the threads that interest you most.</p>
+                    </div>
+                    <div class="flex-1 flex items-start justify-end min-h-0 z-[2]">
+                        <img src="./assets/milgram-experiment.png" alt="Milgram Experiment" class="w-full h-auto object-contain object-top">
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-[180px] z-[3] pointer-events-none bg-gradient-to-b from-transparent to-pastel-blue"></div>
+                </div>
+
+                <!-- Real-life Case Studies (Span 5) -->
+                <div class="col-span-5 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-lg:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-sage">
+                    <div class="min-h-[220px] py-[48px] px-[48px] flex flex-col gap-4 flex-shrink-0 z-[4]">
+                        <h2 class="font-archivo font-semibold text-[40px] leading-[48px] tracking-tight-title text-dark-charcoal stagger-text">Real-life case studies</h2>
+                        <p class="font-archivo font-normal text-[20px] leading-[28px] tracking-body text-dark-slate stagger-text">Practice questions are based on real situations, and every answer option comes with detailed feedback.</p>
+                    </div>
+                    <div class="flex-1 flex items-start justify-end min-h-0 z-[2]">
+                        <img src="./assets/23andme-case.png" alt="23andMe case study" class="w-full h-auto object-contain object-top">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Made by Humans Section -->
+        <section class="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3">
+            <div class="mx-auto max-w-[1440px]">
+                <div class="h-[372px] max-[1200px]:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card overflow-clip flex max-md:flex-col relative bg-pastel-rose">
+                    <div class="relative z-[1] flex-1 min-h-[220px] py-[48px] px-[48px] flex flex-col gap-4">
+                        <h2 class="font-archivo font-semibold text-[40px] leading-[48px] tracking-tight-title text-dark-charcoal stagger-text">Made by humans, for humans</h2>
+                        <p class="font-archivo font-normal text-[20px] leading-[28px] tracking-body text-dark-slate max-w-[740px] stagger-text">
+                            The internet is full of apps that can magically create lessons for you in seconds. Ours take weeks. We believe there's a certain quality to teaching that only comes from ideas you've spent enough time with. Good lessons aren't generated—they're researched, drafted, fact-checked, debated, abandoned, started again, rewritten, published, and revisited.
+                        </p>
+                    </div>
+                    <div class="relative z-[2] h-full pt-[48px] px-[48px] flex flex-col items-center shrink-0">
+                        <img src="./assets/human.webp" alt="Vitruvian human illustration" class="w-[360px] max-[1200px]:w-[240px] h-auto object-contain object-top">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons / Marquee Section -->
+        <section id="lessons" class="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3">
+            <div class="relative max-w-[1440px] mx-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card py-12 overflow-hidden bg-pastel-beige">
+                <div class="absolute -left-px -top-px -bottom-px z-10 pointer-events-none w-[8.5%] bg-gradient-to-r from-pastel-beige to-transparent"></div>
+                <div class="absolute -right-px -top-px -bottom-px z-10 pointer-events-none w-[8.5%] bg-gradient-to-l from-pastel-beige to-transparent"></div>
+                
+                <div class="relative z-20 text-center mb-[64px] max-w-[820px] mx-auto px-4">
+                    <p class="font-gabarito font-semibold text-[18px] leading-[24px] tracking-wide-kicker uppercase text-dark-charcoal mb-6 stagger-text">What's inside</p>
+                    <h2 class="font-archivo font-semibold text-[64px] max-[1200px]:text-[48px] leading-[72px] max-[1200px]:leading-[56px] tracking-tight-title text-dark-charcoal mb-6 stagger-text">Everything you need for better reasoning</h2>
+                    <p class="font-archivo font-normal text-[20px] leading-[28px] tracking-body text-dark-slate stagger-text">Take individual lessons that catch your eye, or work through complete courses on core topics.</p>
+                </div>
+
+                <div class="relative z-[1] flex flex-col gap-4 mb-[24px]">
+                    <div class="marquee-container">
+                        <div class="marquee-track flex gap-4 pr-4">
+                            <!-- Items placeholder -->
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Dunning-Kruger Effect</span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Heuristics</span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Illusion of Objectivity</span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Anchoring Bias</span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Cognitive Dissonance</span>
+                            </div>
+                            <!-- Duplicates for looping -->
+                             <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Dunning-Kruger Effect</span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Heuristics</span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-white rounded-2xl-card px-4 py-4 flex-shrink-0">
+                                <span class="font-archivo font-normal text-[20px] text-dark-slate whitespace-nowrap pr-4">Illusion of Objectivity</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scripts will be handled in main.js -->
+        <script src="./main.js"></script>
+    </body>
+</html>

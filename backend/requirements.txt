@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+scikit-learn
+spacy
+sqlite3-api
+python-multipart
+python-dotenv
+pandas
+numpy

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="MOVIEFY: Brainwash your mind with the right content. AI-powered movie recommendations tailored to your career trajectory." />
+    <meta property="og:title" content="MOVIEFY | Brainwash Your Mind" />
+    <meta property="og:description" content="Brainwash your mind with the right content. AI-powered movie recommendations tailored to your career skills and growth." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="./assets/cloud.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="./assets/cloud-protect-2.webp" fetchpriority="high">
+    <title>MOVIEFY | Brainwash Your Mind With The Right Content</title>
+    
+    <!-- GSAP & Lenis (deferred for performance) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script defer src="https://unpkg.com/@studio-freight/lenis@1.0.35/dist/lenis.min.js"></script>
+
+    <!-- Tailwind CDN with Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        gabarito: ['"Gabarito"', "sans-serif"],
+                        archivo: ['"Archivo"', "sans-serif"],
+                    },
+                    colors: {
+                        dark: {
+                            slate: '#424647',
+                            charcoal: '#181D1F',
+                            active: '#3A4248',
+                        },
+                        pastel: {
+                            peach: '#FDDBCE',
+                            beige: '#EAE4DC',
+                            lavender: '#D7CEF0',
+                            blue: '#DBE5F0',
+                            sage: '#D5E2DA',
+                            rose: '#F4E1E1',
+                            lime: '#E4EED2',
+                            yellow: '#F6E7CF',
+                            coral: '#FD956D',
+                        },
+                        gradient: {
+                            heroStart: '#15aeea',
+                            heroEnd: '#73cef2'
+                        }
+                    },
+                    borderRadius: {
+                        'xl-card': '20px',
+                        '2xl-card': '24px',
+                        '3xl-card': '28px',
+                        '4xl-card': '32px',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 22px rgba(116, 130, 151, 0.15)'
+                    },
+                    letterSpacing: {
+                        'tight-title': '-0.015em',
+                        'wide-kicker': '0.1em',
+                        'body': '0.025em'
+                    }
+                }
+            }
+        }
+    </script>
+  </head>
+  <body class="font-sans text-dark-charcoal bg-white antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
