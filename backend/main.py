@@ -31,7 +31,10 @@ app = FastAPI(title="MOVIEFY API", lifespan=lifespan)
 # Configure CORS for frontend access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with frontend URL
+    allow_origins=[
+        "*",
+        "https://moviefy-65lg.onrender.com",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
