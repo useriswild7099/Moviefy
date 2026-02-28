@@ -371,8 +371,8 @@ function App() {
     <>
       {/* Navbar */}
       <header className="fixed inset-x-0 top-0 z-[1000] p-8 max-md:p-4 pointer-events-none transition-transform duration-500 opacity-0 -translate-y-full" id="navbar">
-          <div id="navbar-inner" className="relative mx-auto max-w-[1200px] flex justify-between items-center py-2 pr-2 pl-6 bg-white/85 backdrop-blur-md rounded-full shadow-soft transition-all duration-300 pointer-events-auto">
-              <a href="#" onClick={reset} aria-label="MOVIEFY Home" className="flex items-center z-10 font-gabarito font-bold text-2xl tracking-tighter text-dark-charcoal hover:opacity-80 transition-opacity">
+          <div id="navbar-inner" className="relative mx-auto max-w-[1200px] flex justify-between items-center py-2 pr-2 pl-6 max-md:pl-4 bg-white/85 backdrop-blur-md rounded-full shadow-soft transition-all duration-300 pointer-events-auto">
+              <a href="#" onClick={reset} aria-label="MOVIEFY Home" className="flex items-center z-10 font-gabarito font-bold text-2xl max-md:text-xl tracking-tighter text-dark-charcoal hover:opacity-80 transition-opacity">
                   MOVIEFY
               </a>
               <nav className="absolute inset-0 flex items-center justify-center max-md:hidden" aria-label="Main Navigation">
@@ -384,7 +384,7 @@ function App() {
                   onClick={profile ? reset : handleUploadClick} 
                   disabled={loading}
                   aria-label={profile ? "Start over and match new resume" : "Open resume upload portal"}
-                  className={`relative inline-flex items-center justify-center px-6 py-2.5 rounded-full text-white font-archivo font-medium text-[18px] max-md:text-[16px] tracking-body z-10 transition-all duration-300 shadow-lg border border-dark-charcoal/20 ${loading ? 'bg-dark-charcoal/50 backdrop-blur-md cursor-not-allowed scale-100' : 'bg-dark-charcoal/80 backdrop-blur-md hover:bg-dark-charcoal hover:border-dark-charcoal/40 active:bg-dark-active hover:scale-105 active:scale-95'}`}
+                  className={`relative inline-flex items-center justify-center px-6 py-2.5 max-md:px-4 max-md:py-2 rounded-full text-white font-archivo font-medium text-[18px] max-md:text-[14px] tracking-body z-10 transition-all duration-300 shadow-lg border border-dark-charcoal/20 ${loading ? 'bg-dark-charcoal/50 backdrop-blur-md cursor-not-allowed scale-100' : 'bg-dark-charcoal/80 backdrop-blur-md hover:bg-dark-charcoal hover:border-dark-charcoal/40 active:bg-dark-active hover:scale-105 active:scale-95'}`}
               >
                   {profile ? "Start Over" : (loading ? "Analyzing..." : "Upload Resume")}
               </button>
@@ -394,22 +394,22 @@ function App() {
       {/* Upload Portal Modal */}
       {isModalOpen && (
           <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-dark-charcoal/40 backdrop-blur-xl animate-fade-in">
-              <div className="relative bg-white w-full max-w-2xl rounded-4xl-card p-12 max-md:p-8 shadow-2xl flex flex-col items-center text-center animate-scale-in" role="dialog" aria-labelledby="modal-title">
+              <div className="relative bg-white w-full max-w-2xl rounded-4xl-card max-md:rounded-2xl-card p-12 max-md:p-6 shadow-2xl flex flex-col items-center text-center animate-scale-in" role="dialog" aria-labelledby="modal-title">
                   <button onClick={() => setIsModalOpen(false)} aria-label="Close upload portal" className="absolute top-6 right-6 w-10 h-10 bg-dark-charcoal/10 backdrop-blur-md border border-dark-charcoal/10 rounded-full flex items-center justify-center hover:bg-dark-charcoal/20 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path d="M13 1L1 13M1 1L13 13" stroke="#181D1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                   </button>
                   
-                  <h2 id="modal-title" className="font-archivo font-semibold text-4xl text-dark-charcoal mb-4">Upload Portal</h2>
-                  <p className="font-archivo text-lg text-dark-slate mb-8 max-w-md">Drop your resume here to begin the cinematic mapping process. We accept PDF and DOCX formats.</p>
+                  <h2 id="modal-title" className="font-archivo font-semibold text-4xl max-md:text-2xl text-dark-charcoal mb-4 max-md:mb-2">Upload Portal</h2>
+                  <p className="font-archivo text-lg max-md:text-base text-dark-slate mb-8 max-md:mb-4 max-w-md">Drop your resume here to begin the cinematic mapping process. We accept PDF and DOCX formats.</p>
                   
                   <div 
                       onDragEnter={handleDrag}
                       onDragLeave={handleDrag}
                       onDragOver={handleDrag}
                       onDrop={handleDrop}
-                      className={`w-full max-w-md h-64 border-2 border-dashed rounded-3xl-card flex flex-col items-center justify-center transition-colors cursor-pointer ${dragActive ? 'border-[#037BB5] bg-pastel-blue/30' : 'border-gray-300 hover:border-gray-400 bg-gray-50'}`}
+                      className={`w-full max-w-md h-64 max-md:h-48 border-2 border-dashed rounded-3xl-card max-md:rounded-2xl-card flex flex-col items-center justify-center transition-colors cursor-pointer ${dragActive ? 'border-[#037BB5] bg-pastel-blue/30' : 'border-gray-300 hover:border-gray-400 bg-gray-50'}`}
                       onClick={() => document.getElementById('file-upload').click()}
                   >
                       <span className="text-4xl mb-4">📄</span>
@@ -467,7 +467,7 @@ function App() {
       <main id="main-content" role="main">
           
           {/* Hero Section */}
-          <div className="h-screen min-h-[500px] max-h-[1440px] p-4 max-md:p-3 flex flex-col pt-24 max-lg:pt-20 max-md:pt-16">
+          <div className="h-screen min-h-[500px] max-h-[1440px] p-4 max-md:p-2 flex flex-col pt-24 max-lg:pt-20 max-md:pt-14">
               <section id="hero" className="hero-wrapper relative w-full max-w-[1440px] h-full flex-1 mx-auto bg-gradient-to-b from-gradient-heroStart to-gradient-heroEnd rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-hidden clip-hero flex items-center justify-center">
                   
                   {/* BG Clouds */}
@@ -516,8 +516,8 @@ function App() {
           {/* DYNAMIC RESULTS STAGE (Appears when profile exists) */}
           <div id="results-target"></div>
           {profile && (
-              <section className="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3 mt-12 animate-fade-slide-up">
-                  <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-3 animate-stagger">
+              <section className="bg-white px-4 max-md:px-2 pb-4 max-md:pb-2 mt-12 max-md:mt-6 animate-fade-slide-up">
+                  <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-2 animate-stagger">
                       
                       {/* Left: Extracted Profile Data */}
                       <div className="col-span-4 max-lg:col-span-1 min-h-[500px] max-md:min-h-0 rounded-4xl-card max-[1200px]:rounded-3xl-card max-md:rounded-2xl-card bg-pastel-beige p-10 max-md:p-6 flex flex-col gap-8 max-md:gap-6 neu-beige neu-transition">
@@ -593,33 +593,37 @@ function App() {
               {/* About Section */}
           <section id="about" className="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3 mt-12 max-md:mt-6">
               <div className="mx-auto max-w-[1440px]">
-                  <div className="min-h-[760px] max-[1200px]:min-h-[640px] max-lg:min-h-[500px] max-md:min-h-[auto] rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex items-center justify-center bg-pastel-peach py-16">
+                  <div className="min-h-[760px] max-[1200px]:min-h-[640px] max-lg:min-h-[500px] max-md:min-h-[auto] rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex items-center justify-center py-16">
                       
-                      {/* Floating Icons */}
-                      <div className="absolute inset-0 pointer-events-none z-[3] max-md:hidden">
-                          <div className="why-image absolute rounded-[16px] max-lg:rounded-[12px] border-2 border-white shadow-soft bg-pastel-beige overflow-hidden opacity-0 scale-75" style={{left:'3.3%',top:'5%',width:'160px',height:'160px'}}><img src="/assets/favicon-32.png" loading="lazy" decoding="async" alt="MOVIEFY icon" className="object-cover w-full h-full" /></div>
-                          <div className="why-image absolute rounded-[16px] max-lg:rounded-[12px] border-2 border-white shadow-soft bg-pastel-beige overflow-hidden opacity-0 scale-75" style={{right:'9.5%',top:'7%',width:'200px',height:'200px'}}><img src="/assets/Cinema.jpg" loading="lazy" decoding="async" alt="Stylized 3D character indicating career progress" className="object-cover w-full h-full" /></div>
-                      </div>
+                      {/* Full background video */}
+                      <video 
+                        autoPlay loop muted playsInline
+                        className="absolute inset-0 w-full h-full object-cover z-[1]"
+                        src="/assets/hero_clip.mp4"
+                      />
+                      
+                      {/* Dark gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70 z-[2]"></div>
 
-                      <div className="relative z-[2] flex flex-col items-center gap-6 py-[80px] max-md:py-[40px] px-12 max-[1200px]:px-8 max-md:px-4 max-w-[960px] text-center w-full">
-                          <h2 className="font-gabarito font-semibold text-[18px] max-md:text-[14px] leading-[24px] tracking-[0.05em] uppercase text-dark-charcoal">Why use MOVIEFY?</h2>
-                          <p className="font-archivo font-normal text-[32px] max-[1200px]:text-[24px] max-md:text-[20px] max-sm:text-[18px] leading-[1.25] tracking-tight-title text-dark-charcoal stagger-text">
+                      <div className="relative z-[3] flex flex-col items-center gap-6 py-[80px] max-md:py-[40px] px-12 max-[1200px]:px-8 max-md:px-4 max-w-[960px] text-center w-full">
+                          <h2 className="font-gabarito font-semibold text-[18px] max-md:text-[14px] leading-[24px] tracking-[0.05em] uppercase text-white/80">Why use MOVIEFY?</h2>
+                          <p className="font-archivo font-normal text-[32px] max-[1200px]:text-[24px] max-md:text-[20px] max-sm:text-[18px] leading-[1.25] tracking-tight-title text-white stagger-text">
                               Your resume tells you where you've been. Excellent storytelling shows you where you can go.
                           </p>
                           <div className="flex items-center justify-center my-2 max-md:scale-75">
-                              {/* Central stylized abstract star or logo icon */}
-                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-dark-charcoal"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white/70"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                           </div>
-                          <p className="font-archivo font-normal text-[32px] max-[1200px]:text-[24px] max-md:text-[20px] max-sm:text-[18px] leading-[1.25] tracking-tight-title text-dark-charcoal stagger-text">
+                          <p className="font-archivo font-normal text-[32px] max-[1200px]:text-[24px] max-md:text-[20px] max-sm:text-[18px] leading-[1.25] tracking-tight-title text-white stagger-text">
                               We extract your skills and map them to characters who overcome exactly what's next in your career.
                           </p>
                       </div>
                   </div>
+
               </div>
           </section>
 
           {/* Manifesto Section */}
-          <section id="manifesto" className="bg-dark-charcoal px-6 max-md:px-4 py-32 max-lg:py-24 mt-12 max-w-[1440px] mx-auto rounded-[64px] max-[1200px]:rounded-[48px] max-md:rounded-[32px] text-white overflow-clip relative shadow-2xl">
+          <section id="manifesto" className="bg-dark-charcoal px-6 max-md:px-3 py-32 max-lg:py-24 max-md:py-16 mt-12 max-md:mt-6 max-w-[1440px] mx-auto rounded-[64px] max-[1200px]:rounded-[48px] max-md:rounded-[24px] text-white overflow-clip relative shadow-2xl">
               {/* Background ambient halos for deep cinematic feel */}
               {/* Background ambient halos removed for a cleaner look */}
 
@@ -635,18 +639,18 @@ function App() {
                   </div>
                   
                   {/* Philosophy Pillars - Alternating Grid */}
-                  <div className="flex flex-col gap-40 max-md:gap-24 mb-16 w-full">
+                  <div className="flex flex-col gap-40 max-md:gap-16 mb-16 max-md:mb-8 w-full">
                       
                       {/* Pillar 1: The Digital Diet */}
-                      <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-12 items-center">
-                          <div className="flex gap-6 flex-col pl-10 max-md:pl-6 order-1 max-lg:order-2">
+                      <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-12 max-md:gap-6 items-center">
+                          <div className="flex gap-6 max-md:gap-4 flex-col pl-10 max-md:pl-4 order-1 max-lg:order-2">
 
                               <h3 className="text-pastel-coral font-gabarito font-bold uppercase tracking-[0.1em] text-[18px] max-md:text-[16px] mb-2 opacity-80">1. The Digital Diet</h3>
                               <p className="font-archivo font-medium text-[clamp(20px,2.5vw,32px)] leading-[1.3] text-balance tracking-tight-title text-white/95 stagger-text">
                                   Your attention is being strip-mined by algorithms optimized for outrage. Directionless scrolling is a cardio workout for your thumbs and a sedative for your ambition. We are living on a diet of digital fast food, wondering why we feel lethargic in our careers.
                               </p>
                           </div>
-                          <div className="rounded-3xl overflow-hidden order-2 max-lg:order-1 group aspect-square">
+                          <div className="rounded-3xl max-md:rounded-2xl overflow-hidden order-2 max-lg:order-1 group aspect-square max-md:aspect-video">
 
                               <img 
                                 src="/assets/movie_grid.jpg" 
@@ -657,8 +661,8 @@ function App() {
                       </div>
                       
                       {/* Pillar 2: The Productive Binge */}
-                      <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-12 items-center">
-                          <div className="rounded-3xl overflow-hidden order-1 group aspect-auto">
+                      <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-12 max-md:gap-6 items-center">
+                          <div className="rounded-3xl max-md:rounded-2xl overflow-hidden order-1 group aspect-auto max-md:aspect-video">
                               <video 
                                 autoPlay 
                                 loop 
@@ -669,7 +673,7 @@ function App() {
                                   <source src="/assets/AHMED..mp4" type="video/mp4" />
                               </video>
                           </div>
-                          <div className="flex gap-6 flex-col pr-10 max-lg:pr-0 max-lg:pl-6 text-right max-lg:text-left order-2">
+                          <div className="flex gap-6 max-md:gap-4 flex-col pr-10 max-lg:pr-0 max-lg:pl-6 max-md:pl-4 text-right max-lg:text-left order-2">
 
                               <h3 className="text-pastel-yellow font-gabarito font-bold uppercase tracking-[0.1em] text-[18px] max-md:text-[16px] mb-2 opacity-80">2. The Productive Binge</h3>
                               <p className="font-archivo font-medium text-[clamp(20px,2.5vw,32px)] leading-[1.3] text-balance tracking-tight-title text-white/95 stagger-text">
@@ -679,15 +683,15 @@ function App() {
                       </div>
                       
                       {/* Pillar 3: Cinematic Incubation */}
-                      <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-12 items-center">
-                          <div className="flex gap-6 flex-col pl-10 max-md:pl-6 order-1 max-lg:order-2">
+                      <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-12 max-md:gap-6 items-center">
+                          <div className="flex gap-6 max-md:gap-4 flex-col pl-10 max-md:pl-4 order-1 max-lg:order-2">
 
                               <h3 className="text-pastel-sage font-gabarito font-bold uppercase tracking-[0.1em] text-[18px] max-md:text-[16px] mb-2 opacity-80">3. Cinematic Incubation</h3>
                               <p className="font-archivo font-medium text-[clamp(20px,2.5vw,32px)] leading-[1.3] text-balance tracking-tight-title text-white/95 stagger-text">
                                   By extracting your technical skills and identifying your trajectory, we curate your downtime to act as an incubator for your next breakthrough. Don't just go with the flow. Learn to build the boat and direct the river.
                               </p>
                           </div>
-                          <div className="rounded-3xl overflow-hidden order-2 max-lg:order-1 group aspect-auto">
+                          <div className="rounded-3xl max-md:rounded-2xl overflow-hidden order-2 max-lg:order-1 group aspect-auto max-md:aspect-video">
                               <video 
                                 autoPlay 
                                 loop 
@@ -713,8 +717,8 @@ function App() {
           </section>
 
               {/* Features Matrix */}
-          <section className="bg-white px-4 max-md:px-3 pb-4 max-md:pb-3 mt-12 max-md:mt-6">
-              <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-3">
+          <section className="bg-white px-4 max-md:px-2 pb-4 max-md:pb-2 mt-12 max-md:mt-6">
+              <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-2">
                   
                   {/* Antidote Card (Span 5) */}
                   <div className="col-span-5 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-md:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-beige group">
@@ -777,8 +781,8 @@ function App() {
                                   The internet provides infinite distractions to numb your brain. We want to do the opposite. You deserve content that accelerates your progression. Whether you're feeling imposter syndrome, facing a massive pivot, or charting a startup, there is a movie engineered to teach you how to win. 
                               </p>
                           </div>
-                          <div className="relative z-[2] h-full max-md:h-[250px] pt-[0] max-md:pt-4 pr-[24px] max-md:px-4 pb-[0] flex flex-col items-center justify-end shrink-0 mix-blend-multiply">
-                              <img src="/assets/Cinema.jpg" loading="lazy" decoding="async" alt="Vitruvian man director silhouette representing human potential and cinematography" className="w-[420px] max-[1200px]:w-[320px] max-lg:w-[280px] max-md:w-full max-md:h-full max-sm:w-[200px] object-contain object-bottom drop-shadow-xl rounded-xl" />
+                          <div className="relative z-[2] h-full max-md:h-[200px] pt-[0] max-md:pt-2 pr-[24px] max-md:px-4 pb-[0] flex flex-col items-center justify-end shrink-0 mix-blend-multiply">
+                              <img src="/assets/Cinema.jpg" loading="lazy" decoding="async" alt="Vitruvian man director silhouette representing human potential and cinematography" className="w-[420px] max-[1200px]:w-[320px] max-lg:w-[280px] max-md:w-full max-md:h-full max-sm:w-[180px] object-contain object-bottom drop-shadow-xl rounded-xl" />
                           </div>
                       </div>
                   </div>
