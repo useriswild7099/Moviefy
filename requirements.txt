@@ -1,0 +1,11 @@
+fastapi
+pydantic
+scikit-learn
+spacy
+python-multipart
+python-dotenv
+pandas
+numpy
+pdfplumber
+docx2txt
+requests

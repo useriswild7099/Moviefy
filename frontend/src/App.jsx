@@ -55,6 +55,8 @@ const LOADING_QUOTES = [
 ];
 
 function App() {
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
   const [loadingQuote, setLoadingQuote] = useState("")
@@ -290,7 +292,7 @@ function App() {
     try {
       const [, uploadRes] = await Promise.all([
         minDelay,
-        fetch("http://localhost:8000/api/upload", {
+        fetch(`${API_BASE}/api/upload`, {
           method: "POST",
           body: formData,
         })
@@ -300,7 +302,7 @@ function App() {
       const uploadData = await uploadRes.json()
       setProfile(uploadData.profile)
 
-      const recsRes = await fetch("http://localhost:8000/api/recommendations", {
+      const recsRes = await fetch(`${API_BASE}/api/recommendations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(uploadData.profile),
