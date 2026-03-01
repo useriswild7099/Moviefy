@@ -1,9 +1,11 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List
 import traceback
+import os
 
 import resume_parser
 import recommender
@@ -66,7 +68,7 @@ async def upload_resume(file: UploadFile = File()):
         return {"filename": filename, "profile": profile}
 
     except HTTPException:
-        raise  # Re-raise our own validation errors
+        raise
     except Exception as e:
         print(f"[ERROR] upload_resume failed: {traceback.format_exc()}")
         raise HTTPException(
@@ -97,7 +99,7 @@ def get_recommendations(profile: ProfileRequest) -> dict:
         )
 
 
-# ── Global exception handler for unhandled errors ──
+# ── Global exception handler ──
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     print(f"[UNHANDLED ERROR] {traceback.format_exc()}")
