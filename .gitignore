@@ -13,7 +13,7 @@ dist/
 
 # Database
 *.db
-!api/movies.db
+!movies.db
 
 # IDE
 .vscode/
