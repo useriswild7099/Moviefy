@@ -1,0 +1,132 @@
+﻿================================================================================
+MOVIEFY DEEP ANALYSIS ù COMPREHENSIVE MULTI-BACKGROUND TEST
+================================================================================
+
+================================================================================
+  TESTING: TECH SENIOR
+================================================================================
+
+  Industry:      Technology + Arts
+  Career Stage:  Mid-Level
+  Years Exp:     7
+  Vibe:          Strategic Visionary (secondary: Creative Free-Spirit)
+  Skills Found:  9 -> vision, scaling, generative ai, microservices, focus, system design, ci/cd, cloud architecture
+  Tech Stack:    python, java, go, r, react, django, node.js, aws
+  Action Verbs:  {'leadership': 2, 'creation': 1}
+  Skill Gaps:    api development, algorithm design, devops, private equity, cloud computing
+[Recommender] TF-IDF cache warmed: 6750 movies, 10000 features
+
+  --- TOP 3 RECOMMENDATIONS ---
+
+  #1. Black Mirror [Web Series] ù 100% match
+     Mentor's Note: Your instinct for the long game will make Black Mirror resonate on a level casual viewers never reach. The Technology context makes this more than entertainment ù it's professional development disguis...
+
+  #2. Her [Movie] ù 95% match
+     Mentor's Note: As a strategic thinker, Her will feel like a roadmap for the kind of disruption you chase professionally. The Technology power dynamics, the politics, the breakthroughs ù it's all here, unfiltered....
+
+  #3. The Beginning of Life: The Series [Web Series] ù 89% match
+     Mentor's Note: This matches your future-first mindset. The narrative arc in The Beginning of Life: The Series mirrors how paradigm-shifters actually think. A rare insider's look at Technology that you won't find in ...
+
+
+================================================================================
+  TESTING: HEALTHCARE
+================================================================================
+
+  Industry:      Healthcare + Technology
+  Career Stage:  Senior
+  Years Exp:     0
+  Vibe:          Creative Free-Spirit (secondary: Empathic Leader)
+  Skills Found:  8 -> epidemiology, advocacy, patient care, mental health advocacy, diagnostics, clinical research, public health, drug development
+  Tech Stack:    r
+  Action Verbs:  {'leadership': 2, 'improvement': 1}
+  Skill Gaps:    iot, medical imaging, surgery, biotechnology, pharmacology
+
+  --- TOP 3 RECOMMENDATIONS ---
+
+  #1. Molly [Movie] ù 100% match
+     Mentor's Note: Molly captures the tension between creative freedom and commercial constraint that you navigate daily. Tailor-made for someone in Healthcare. The parallels to your career path are unmistakable. As som...
+
+  #2. Jane The Virgin [Movie] ù 96% match
+     Mentor's Note: Your creative instincts will absorb Jane The Virgin differently ù you'll see the craft behind every frame and feel the intention. The Healthcare power dynamics, the politics, the breakthroughs ù it's ...
+
+  #3. Weird Wonders of the World [Movie] ù 95% match
+     Mentor's Note: This film speaks the language of design, narrative, and human experience ù your native tongue. Tailor-made for someone in Healthcare. The parallels to your career path are unmistakable. The patient ca...
+
+
+================================================================================
+  TESTING: FINANCE
+================================================================================
+
+  Industry:      Finance + Technology
+  Career Stage:  Senior
+  Years Exp:     0
+  Vibe:          Strategic Visionary (secondary: The Relentless Hustler)
+  Skills Found:  15 -> corporate finance, blockchain, mergers and acquisitions, fintech, risk management, cryptocurrency, financial modeling, stakeholder management
+  Tech Stack:    go, r
+  Action Verbs:  {'leadership': 2, 'creation': 1}
+  Skill Gaps:    crisis management, tax planning, generative ai, operations management, project management
+
+  --- TOP 3 RECOMMENDATIONS ---
+
+  #1. Margin Call [Movie] ù 100% match
+     Mentor's Note: Your visionary outlook matches the high-stakes, forward-thinking world of Margin Call. The Finance power dynamics, the politics, the breakthroughs ù it's all here, unfiltered. Your foundation in risk ...
+
+  #2. The Last Shot [Movie] ù 95% match
+     Mentor's Note: As a strategic thinker, The Last Shot will feel like a roadmap for the kind of disruption you chase professionally. If you've ever felt like nobody outside Finance understands your world, this film ge...
+
+  #3. I Don't Know How She Does It [Movie] ù 95% match
+     Mentor's Note: Your visionary outlook matches the high-stakes, forward-thinking world of I Don't Know How She Does It. This is the film that Finance veterans recommend to each other when no one else is listening. It...
+
+
+================================================================================
+  TESTING: CREATIVE DESIGNER
+================================================================================
+
+  Industry:      Arts + Technology
+  Career Stage:  Senior
+  Years Exp:     0
+  Vibe:          Creative Free-Spirit (secondary: Pragmatic Builder)
+  Skills Found:  9 -> animation, motion graphics, video production, ui design, brand identity, storytelling, graphic design, 3d modeling
+  Tech Stack:    r, figma, adobe xd, after effects, git
+  Action Verbs:  {'leadership': 1, 'creation': 1}
+  Skill Gaps:    algorithm design, system design, artificial intelligence, performing arts, organizational design
+
+  --- TOP 3 RECOMMENDATIONS ---
+
+  #1. Fantasia 2000 [Movie] ù 100% match
+     Mentor's Note: Your creative instincts will absorb Fantasia 2000 differently ù you'll see the craft behind every frame and feel the intention. If you want to close the gap in performing arts, this is your cinematic ...
+
+  #2. Walk Hard: The Dewey Cox Story [Movie] ù 98% match
+     Mentor's Note: Walk Hard: The Dewey Cox Story captures the tension between creative freedom and commercial constraint that you navigate daily. A masterclass in performing arts ù exactly the areas where your resume s...
+
+  #3. StoryBots Super Songs [Movie] ù 97% match
+     Mentor's Note: StoryBots Super Songs captures the tension between creative freedom and commercial constraint that you navigate daily. This one puts performing arts front and center, giving you a blueprint for the co...
+
+
+================================================================================
+  TESTING: ENTRY-LEVEL GRAD
+================================================================================
+
+  Industry:      Technology + Education
+  Career Stage:  Entry-level
+  Years Exp:     0
+  Vibe:          Creative Free-Spirit (secondary: The Relentless Hustler)
+  Skills Found:  8 -> machine learning, frontend development, database management, data science, algorithm design, devops, software engineering, cloud computing
+  Tech Stack:    python, java, javascript, typescript, go, r, react, tensorflow
+  Action Verbs:  {'achievement': 1, 'creation': 1}
+  Skill Gaps:    creativity, venture capital, overcoming adversity, biotechnology, backend development
+
+  --- TOP 3 RECOMMENDATIONS ---
+
+  #1. Robotech [Movie] ù 100% match
+     Mentor's Note: Robotech captures the tension between creative freedom and commercial constraint that you navigate daily. A rare insider's look at Technology that you won't find in any textbook or LinkedIn post. Your...
+
+  #2. Project Mc▓ [Movie] ù 99% match
+     Mentor's Note: Project Mc▓ captures the tension between creative freedom and commercial constraint that you navigate daily. If you've ever felt like nobody outside Technology understands your world, this film gets i...
+
+  #3. Here to Heart [Movie] ù 98% match
+     Mentor's Note: Here to Heart captures the tension between creative freedom and commercial constraint that you navigate daily. A rare insider's look at Technology that you won't find in any textbook or LinkedIn post....
+
+================================================================================
+TEST COMPLETE
+================================================================================

@@ -55,7 +55,7 @@ const LOADING_QUOTES = [
 ];
 
 function App() {
-  const API_BASE = ''  // Same Vercel domain — use relative URLs
+  const API_BASE = window.location.port === '5173' ? 'http://localhost:8000' : ''
 
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -519,23 +519,48 @@ function App() {
               <section className="bg-white px-4 max-md:px-2 pb-4 max-md:pb-2 mt-12 max-md:mt-6 animate-fade-slide-up">
                   <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-2 animate-stagger">
                       
-                      {/* Left: Extracted Profile Data */}
-                      <div className="col-span-4 max-lg:col-span-1 min-h-[500px] max-md:min-h-0 rounded-4xl-card max-[1200px]:rounded-3xl-card max-md:rounded-2xl-card bg-pastel-beige p-10 max-md:p-6 flex flex-col gap-8 max-md:gap-6 neu-beige neu-transition">
+                      {/* Left: Deep Profile Analysis */}
+                      <div className="col-span-4 max-lg:col-span-1 min-h-[500px] max-md:min-h-0 rounded-4xl-card max-[1200px]:rounded-3xl-card max-md:rounded-2xl-card bg-pastel-beige p-10 max-md:p-6 flex flex-col gap-6 max-md:gap-4 neu-beige neu-transition">
                           <div>
-                              <h3 className="font-gabarito font-semibold text-[18px] tracking-wide-kicker uppercase text-dark-charcoal mb-4">Your Profile</h3>
-                              <p className="font-archivo text-4xl font-semibold text-dark-charcoal leading-tight mb-2">
+                              <h3 className="font-gabarito font-semibold text-[18px] tracking-wide-kicker uppercase text-dark-charcoal mb-4">Deep Analysis</h3>
+                              <p className="font-archivo text-4xl font-semibold text-dark-charcoal leading-tight mb-1">
                                   {profile.industry}
                               </p>
-                              <p className="font-archivo text-xl text-dark-slate">Level: {profile.career_stage}</p>
+                              {profile.secondary_industry && (
+                                <p className="font-archivo text-lg text-dark-slate">+ {profile.secondary_industry}</p>
+                              )}
+                              <div className="flex flex-col gap-1 mt-3">
+                                <p className="font-archivo text-lg text-dark-slate">Level: <span className="font-semibold text-dark-charcoal">{profile.career_stage}</span></p>
+                                {profile.years_of_experience > 0 && (
+                                  <p className="font-archivo text-lg text-dark-slate">Experience: <span className="font-semibold text-dark-charcoal">{profile.years_of_experience}+ years</span></p>
+                                )}
+                                {profile.vibe && (
+                                  <p className="font-archivo text-lg text-dark-slate">Professional Vibe: <span className="font-semibold text-[#037BB5]">{profile.vibe}</span></p>
+                                )}
+                              </div>
                           </div>
 
                           <div className="w-full h-px bg-black/10"></div>
 
+                          {/* Technologies */}
+                          {profile.technologies && profile.technologies.length > 0 && (
+                            <div>
+                                <h4 className="font-archivo font-semibold text-lg text-dark-charcoal mb-3">Tech Stack</h4>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {profile.technologies.slice(0, 10).map(tech => (
+                                        <span key={tech} className="px-3 py-1 bg-dark-charcoal/5 rounded-md font-archivo font-medium text-dark-charcoal text-[13px] border border-black/5">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                          )}
+
                           <div>
-                              <h4 className="font-archivo font-semibold text-xl text-dark-charcoal mb-4">Verified Strengths</h4>
+                              <h4 className="font-archivo font-semibold text-lg text-dark-charcoal mb-3">Verified Strengths</h4>
                               <div className="flex flex-wrap gap-2">
-                                  {profile.found_skills.slice(0, 6).map(skill => (
-                                      <span key={skill} className="px-4 py-2 max-md:px-3 max-md:py-1.5 bg-white rounded-full font-archivo font-medium text-dark-slate text-[15px] max-md:text-[13px] border border-black/5 neu-white neu-transition">
+                                  {profile.found_skills.slice(0, 8).map(skill => (
+                                      <span key={skill} className="px-3 py-1.5 max-md:px-2.5 max-md:py-1 bg-white rounded-full font-archivo font-medium text-dark-slate text-[14px] max-md:text-[12px] border border-black/5 neu-white neu-transition">
                                           {skill}
                                       </span>
                                   ))}
@@ -543,10 +568,10 @@ function App() {
                           </div>
 
                           <div>
-                              <h4 className="font-archivo font-semibold text-xl text-dark-charcoal mb-4">Growth Opportunities</h4>
+                              <h4 className="font-archivo font-semibold text-lg text-dark-charcoal mb-3">Growth Opportunities</h4>
                               <div className="flex flex-wrap gap-2">
-                                  {profile.skill_gaps.slice(0, 4).map(gap => (
-                                      <span key={gap} className="px-4 py-2 max-md:px-3 max-md:py-1.5 bg-pastel-coral/20 rounded-full font-archivo font-medium text-red-900 text-[15px] max-md:text-[13px] border border-pastel-coral/30 neu-beige neu-transition">
+                                  {profile.skill_gaps.slice(0, 5).map(gap => (
+                                      <span key={gap} className="px-3 py-1.5 max-md:px-2.5 max-md:py-1 bg-pastel-coral/20 rounded-full font-archivo font-medium text-red-900 text-[14px] max-md:text-[12px] border border-pastel-coral/30 neu-beige neu-transition">
                                           {gap}
                                       </span>
                                   ))}
@@ -562,8 +587,13 @@ function App() {
                                {recommendations.length > 0 ? recommendations.map((movie, idx) => (
                                    <div key={idx} className="bg-white rounded-3xl-card max-md:rounded-2xl-card p-8 max-md:p-5 flex flex-col gap-4 max-md:gap-3 neu-white neu-transition border border-black/5 hover:translate-y-[-2px]">
                                        <div className="flex justify-between items-start max-md:flex-col max-md:gap-2">
-                                            <h4 className="font-archivo font-bold text-3xl max-md:text-xl max-sm:text-lg text-dark-charcoal">{movie.title}</h4>
-                                            <span className="px-4 py-1.5 max-md:px-3 max-md:py-1 bg-green-100 text-green-800 rounded-full font-archivo font-bold text-[16px] max-md:text-[13px] flex-shrink-0 neu-white">
+                                            <div className="flex flex-col gap-1">
+                                                <h4 className="font-archivo font-bold text-3xl max-md:text-xl max-sm:text-lg text-dark-charcoal">{movie.title}</h4>
+                                                <span className={`inline-block mr-auto px-2 py-0.5 rounded text-[12px] font-gabarito font-bold uppercase tracking-wider ${movie.type === 'Web Series' ? 'bg-[#037BB5]/10 text-[#037BB5]' : 'bg-dark-charcoal/5 text-dark-slate'}`}>
+                                                    {movie.type}
+                                                </span>
+                                            </div>
+                                            <span className="px-4 py-1.5 max-md:px-3 max-md:py-1 bg-green-100 text-green-800 rounded-full font-archivo font-bold text-[16px] max-md:text-[13px] flex-shrink-0 neu-white mt-1 max-md:mt-0">
                                                 {(movie.match_score * 100).toFixed(0)}% Match
                                             </span>
                                        </div>

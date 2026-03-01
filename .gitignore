@@ -13,7 +13,7 @@ dist/
 
 # Database
 *.db
-!movies.db
+!backend/movies.db
 
 # IDE
 .vscode/
@@ -31,6 +31,7 @@ test_optimization.py
 quick_test.py
 test_results_clean.txt
 optimization_results.txt
+*.zip
 
 # Gemini
 .gemini/
