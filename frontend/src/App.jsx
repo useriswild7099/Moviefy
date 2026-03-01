@@ -55,7 +55,7 @@ const LOADING_QUOTES = [
 ];
 
 function App() {
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  const API_BASE = ''  // Same Vercel domain — use relative URLs
 
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
