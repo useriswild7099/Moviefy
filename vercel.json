@@ -1,5 +1,4 @@
 {
-  "buildCommand": "pip install -r requirements.txt && cd frontend && npm install && npm run build && cp -r dist/* ../public/",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/index.py" },
     { "source": "/api", "destination": "/index.py" }
