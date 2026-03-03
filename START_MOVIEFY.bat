@@ -1,31 +1,32 @@
 @echo off
 setlocal
-title MOVIEFY Launcher
+cd /d "%~dp0"
+title MOVIEFY Launcher ^| Lights, Camera, Career
 
 echo.
 echo ========================================
 echo         STARTING MOVIEFY...
+echo    (Abandon all mindless content here)
 echo ========================================
 echo.
 
-if not exist "venv\Scripts\activate.bat" (
-    echo [ERROR] Setup not found!
-    echo Please run 'setup_wizard.bat' first.
-    pause
-    exit /b 1
-)
+cd frontend
 
-:: Activate venv
-call venv\Scripts\activate.bat
+:: Ensure dependencies are installed
+if not exist "node_modules\" (
+    echo [INFO] First time setup: Installing dependencies...
+    call npm install
+)
 
 :: Start Browser
 echo Launching your browser...
-start http://localhost:8000
+echo (Preparing to wash your brain with the good stuff...)
+start http://localhost:5173
 
 :: Start Server
-echo Starting the server on http://localhost:8000
+echo Starting the frontend server on http://localhost:5173
 echo.
-echo (Keep this window open while using the app)
+echo [IMPORTANT] Keep this window open. 
 echo.
-python -m uvicorn backend.index:app --host 0.0.0.0 --port 8000 --log-level info
+call npm run dev
 pause

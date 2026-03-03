@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+import { ARTICLES } from './data/articles.js'
+import { extractText, parseResume } from './utils/parser'
+import { generateRecommendations } from './utils/recommender'
+import { buildProfileFromPrompt, getSkillsForIndustry, VIBE_OPTIONS, CAREER_STAGES, INDUSTRIES } from './utils/promptBuilder'
 
 const LOADING_QUOTES = [
   "If your content is rotting your brain, it's time for a digital diet.",
@@ -55,7 +59,6 @@ const LOADING_QUOTES = [
 ];
 
 function App() {
-  const API_BASE = window.location.port === '5173' ? 'http://localhost:8000' : ''
 
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -66,11 +69,39 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [dragActive, setDragActive] = useState(false)
   const [fadingOut, setFadingOut] = useState(false)
+  const [activeArticle, setActiveArticle] = useState(null)
+  const [readingProgress, setReadingProgress] = useState(0)
+  const [currentView, setCurrentView] = useState('home')
+
+  // Pathway Mode Tracking (null = Menu, 'upload', 'text', 'quiz', 'wizard')
+  const [activePathway, setActivePathway] = useState(null)
   
+  // Pathway D: Wizard State
+  const [wizardStep, setWizardStep] = useState(0)
+  const [wizardData, setWizardData] = useState({
+    jobTitle: '',
+    industry: '',
+    careerStage: '',
+    selectedSkills: [],
+    vibe: '',
+    mood: '', // new mood step
+  })
+  const [availableSkills, setAvailableSkills] = useState([])
+  
+
   const lenisRef = useRef(null)
+
+  // Fix: Restore body overflow when article modal closes or component unmounts
+  useEffect(() => {
+    return () => { document.body.style.overflow = ''; };
+  }, [activeArticle]);
 
   useEffect(() => {
     // Initialize Lenis for smooth scrolling
+    if (!window.Lenis) {
+      console.warn('[App] Lenis not loaded — smooth scrolling disabled.');
+      return;
+    }
     lenisRef.current = new window.Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
@@ -79,11 +110,13 @@ function App() {
         smooth: true,
     });
 
+    // Fix: Store RAF ID so we can cancel it on cleanup
+    let rafId;
     function raf(time) {
         lenisRef.current?.raf(time);
-        requestAnimationFrame(raf);
+        rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     // Keep Lenis in sync with DOM changes (debounced to prevent infinite loop)
     let resizeTimeout;
@@ -184,7 +217,8 @@ function App() {
 
         // Parallax Floating Icons
         const initFloatingIcons = () => {
-            const icons = document.querySelectorAll('.why-image');
+            const icons = document.querySelectorAll('.floating-icon');
+            if (!icons || icons.length === 0) return;
             gsap.fromTo(icons, 
                 { opacity: 0, scale: 0.75, y: 50 },
                 {
@@ -261,6 +295,7 @@ function App() {
     lenisRef.current.on('scroll', ({ scroll }) => handleScroll(scroll));
 
     return () => {
+        cancelAnimationFrame(rafId);
         resizeObserver.disconnect();
         lenisRef.current?.destroy();
         window.ScrollTrigger?.getAll().forEach(t => t.kill());
@@ -268,12 +303,29 @@ function App() {
   }, []);
 
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const ALLOWED_TYPES = ['.pdf', '.docx'];
+
+  const validateFile = (file) => {
+    if (file.size > MAX_FILE_SIZE) {
+      setError(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 5MB.`);
+      return false;
+    }
+    const ext = '.' + file.name.split('.').pop().toLowerCase();
+    if (!ALLOWED_TYPES.includes(ext)) {
+      setError(`Unsupported file type (${ext}). Please upload a PDF or DOCX.`);
+      return false;
+    }
+    return true;
+  };
+
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0]
+      if (!validateFile(selectedFile)) return;
       setFile(selectedFile)
       setError(null)
-      processFile(selectedFile) // Immediately trigger processing
+      processFile(selectedFile)
     }
   }
 
@@ -283,34 +335,30 @@ function App() {
     setError(null)
     setLoadingQuote(LOADING_QUOTES[Math.floor(Math.random() * LOADING_QUOTES.length)])
 
-    const formData = new FormData()
-    formData.append("file", fileToProcess)
-
     // Minimum 2-second loading screen so the quote is readable
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000))
 
     try {
-      const [, uploadRes] = await Promise.all([
-        minDelay,
-        fetch(`${API_BASE}/api/upload`, {
-          method: "POST",
-          body: formData,
-        })
-      ])
-      if (!uploadRes.ok) throw new Error("Connection failed")
+      console.log("[App.jsx] Starting local processing...");
+      // 1. Extract Text (Offline)
+      console.log("[App.jsx] Extracting text from file:", fileToProcess.name, "type:", fileToProcess.type);
+      const text = await extractText(fileToProcess);
+      console.log("[App.jsx] Text extracted successfully. Length:", text.length);
       
-      const uploadData = await uploadRes.json()
-      setProfile(uploadData.profile)
+      // 2. Parse Resume (Offline)
+      console.log("[App.jsx] Parsing resume...");
+      const parsedProfile = parseResume(text);
+      console.log("[App.jsx] Parsed profile:", parsedProfile);
+      setProfile(parsedProfile);
 
-      const recsRes = await fetch(`${API_BASE}/api/recommendations`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(uploadData.profile),
-      })
-      if (!recsRes.ok) throw new Error("Matching engine failed")
-      
-      const recsData = await recsRes.json()
-      setRecommendations(recsData.recommendations)
+      // 3. Generate Recommendations (Offline)
+      console.log("[App.jsx] Generating recommendations...");
+      const recs = generateRecommendations(parsedProfile, 10);
+      console.log("[App.jsx] Recommendations generated:", recs.length);
+      setRecommendations(recs);
+
+      // Wait for min delay if needed
+      await minDelay;
       
       // While the overlay is still covering, scroll to results underneath
       setTimeout(() => {
@@ -325,7 +373,8 @@ function App() {
       await new Promise(resolve => setTimeout(resolve, 800))
 
     } catch (err) {
-      setError("Unable to process resume. Please ensure the backend is running.")
+      console.error("[App.jsx] FATAL ERROR during local analysis:", err);
+      setError("Unable to process resume locally. See browser console for details.");
     } finally {
       setLoading(false)
       setFadingOut(false)
@@ -352,6 +401,7 @@ function App() {
     setDragActive(false)
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const selectedFile = e.dataTransfer.files[0]
+      if (!validateFile(selectedFile)) return;
       setFile(selectedFile)
       setError(null)
       setIsModalOpen(false)
@@ -364,7 +414,82 @@ function App() {
     setRecommendations([])
     setFile(null)
     setError(null)
+    setActivePathway(null)
+    setWizardStep(0)
+    setWizardData({ jobTitle: '', industry: '', careerStage: '', selectedSkills: [], vibe: '', mood: '' })
     lenisRef.current?.scrollTo(0, { duration: 1.5 });
+  }
+
+  const processPrompt = async () => {
+    setIsModalOpen(false)
+    setLoading(true)
+    setFadingOut(false)
+    setError(null)
+    setLoadingQuote(LOADING_QUOTES[Math.floor(Math.random() * LOADING_QUOTES.length)])
+    const minDelay = new Promise(resolve => setTimeout(resolve, 2000))
+    
+    try {
+      let promptProfile = null;
+      
+      if (activePathway === 'wizard') {
+         promptProfile = buildProfileFromPrompt(wizardData)
+      } else if (activePathway === 'quiz') {
+         // promptProfile = buildProfileFromQuiz(quizData) // Soon
+         throw new Error("Quiz parsing not implemented yet")
+      }
+      
+      if (!promptProfile) throw new Error("No profile generated");
+
+      setProfile(promptProfile)
+      // Pass the explicit mood directly if wizard mode; else it defaults to null inside
+      const recs = generateRecommendations(promptProfile, 10, wizardData.mood)
+      setRecommendations(recs)
+      
+      await minDelay
+      setTimeout(() => {
+        lenisRef.current?.scrollTo('#results-target', { offset: -100, duration: 1.2 })
+      }, 100)
+      
+      await new Promise(resolve => setTimeout(resolve, 400))
+      setFadingOut(true)
+      await new Promise(resolve => setTimeout(resolve, 800))
+    } catch (err) {
+      console.error('[App.jsx] Prompt processing error:', err)
+      setError('Unable to generate recommendations. Please try again.')
+    } finally {
+      setLoading(false)
+      setFadingOut(false)
+    }
+  }
+
+  const handleWizardNext = () => {
+    if (wizardStep === 0) {
+      if (!wizardData.jobTitle.trim() || !wizardData.industry) return
+      setAvailableSkills(getSkillsForIndustry(wizardData.industry, 30))
+      setWizardStep(1)
+    } else if (wizardStep === 1) {
+      if (!wizardData.careerStage) return
+      setWizardStep(2)
+    } else if (wizardStep === 2) {
+      setWizardStep(3)
+    } else if (wizardStep === 3) {
+      if (!wizardData.vibe) return
+      processPrompt()
+    }
+  }
+
+  const handleWizardBack = () => {
+    if (wizardStep > 0) setWizardStep(wizardStep - 1)
+    else { setPromptMode(false); setWizardStep(0) }
+  }
+
+  const toggleSkill = (skill) => {
+    setWizardData(prev => ({
+      ...prev,
+      selectedSkills: prev.selectedSkills.includes(skill)
+        ? prev.selectedSkills.filter(s => s !== skill)
+        : [...prev.selectedSkills, skill]
+    }))
   }
 
   return (
@@ -372,21 +497,22 @@ function App() {
       {/* Navbar */}
       <header className="fixed inset-x-0 top-0 z-[1000] p-8 max-md:p-4 pointer-events-none transition-transform duration-500 opacity-0 -translate-y-full" id="navbar">
           <div id="navbar-inner" className="relative mx-auto max-w-[1200px] flex justify-between items-center py-2 pr-2 pl-6 max-md:pl-4 bg-white/85 backdrop-blur-md rounded-full shadow-soft transition-all duration-300 pointer-events-auto">
-              <a href="#" onClick={reset} aria-label="MOVIEFY Home" className="flex items-center z-10 font-gabarito font-bold text-2xl max-md:text-xl tracking-tighter text-dark-charcoal hover:opacity-80 transition-opacity">
+              <a href="#" onClick={(e) => { e.preventDefault(); reset(); setCurrentView('home'); }} aria-label="MOVIEFY Home" className="flex items-center z-10 font-gabarito font-bold text-2xl max-md:text-xl tracking-tighter text-dark-charcoal hover:opacity-80 transition-opacity">
                   MOVIEFY
               </a>
               <nav className="absolute inset-0 flex items-center justify-center max-md:hidden" aria-label="Main Navigation">
-                  <a href="#about" className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">How it works</a>
-                  <a href="#lessons" className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">Themes</a>
-                  <a href="#results-target" className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">Match Engine</a>
+                  <a href="#about" onClick={() => setCurrentView('home')} className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">How it works</a>
+                  <a href="#lessons" onClick={() => setCurrentView('home')} className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">Themes</a>
+                  <a href="#articles" onClick={(e) => { e.preventDefault(); setCurrentView('library'); window.scrollTo(0, 0); }} className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">Deep Dives</a>
+                  <a href="#results-target" onClick={() => setCurrentView('home')} className="px-5 py-2 inline-flex items-center justify-center rounded-full font-archivo font-medium text-[18px] text-dark-charcoal hover:bg-black/5 transition-colors duration-150">Match Engine</a>
               </nav>
               <button 
                   onClick={profile ? reset : handleUploadClick} 
                   disabled={loading}
                   aria-label={profile ? "Start over and match new resume" : "Open resume upload portal"}
-                  className={`relative inline-flex items-center justify-center px-6 py-2.5 max-md:px-4 max-md:py-2 rounded-full text-white font-archivo font-medium text-[18px] max-md:text-[14px] tracking-body z-10 transition-all duration-300 shadow-lg border border-dark-charcoal/20 ${loading ? 'bg-dark-charcoal/50 backdrop-blur-md cursor-not-allowed scale-100' : 'bg-dark-charcoal/80 backdrop-blur-md hover:bg-dark-charcoal hover:border-dark-charcoal/40 active:bg-dark-active hover:scale-105 active:scale-95'}`}
+                  className={`relative inline-flex items-center justify-center px-5 py-2 max-md:px-3 max-md:py-1.5 rounded-full text-white font-archivo font-medium text-[15px] max-md:text-[13px] tracking-wide z-10 transition-all duration-300 shadow-lg border border-dark-charcoal/20 ${loading ? 'bg-dark-charcoal/50 backdrop-blur-md cursor-not-allowed scale-100' : 'bg-dark-charcoal/80 backdrop-blur-md hover:bg-dark-charcoal hover:border-dark-charcoal/40 active:bg-dark-active hover:scale-105 active:scale-95'}`}
               >
-                  {profile ? "Start Over" : (loading ? "Analyzing..." : "Upload Resume")}
+                  {profile ? "Start Over" : (loading ? "Analyzing..." : "Find My Cinematic Twin")}
               </button>
           </div>
       </header>
@@ -395,38 +521,243 @@ function App() {
       {isModalOpen && (
           <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-dark-charcoal/40 backdrop-blur-xl animate-fade-in">
               <div className="relative bg-white w-full max-w-2xl rounded-4xl-card max-md:rounded-2xl-card p-12 max-md:p-6 shadow-2xl flex flex-col items-center text-center animate-scale-in" role="dialog" aria-labelledby="modal-title">
-                  <button onClick={() => setIsModalOpen(false)} aria-label="Close upload portal" className="absolute top-6 right-6 w-10 h-10 bg-dark-charcoal/10 backdrop-blur-md border border-dark-charcoal/10 rounded-full flex items-center justify-center hover:bg-dark-charcoal/20 transition-colors">
+                  <button onClick={() => { setIsModalOpen(false); setPromptMode(false); setWizardStep(0); }} aria-label="Close upload portal" className="absolute top-6 right-6 w-10 h-10 bg-dark-charcoal/10 backdrop-blur-md border border-dark-charcoal/10 rounded-full flex items-center justify-center hover:bg-dark-charcoal/20 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path d="M13 1L1 13M1 1L13 13" stroke="#181D1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                   </button>
-                  
-                  <h2 id="modal-title" className="font-archivo font-semibold text-4xl max-md:text-2xl text-dark-charcoal mb-4 max-md:mb-2">Upload Portal</h2>
-                  <p className="font-archivo text-lg max-md:text-base text-dark-slate mb-8 max-md:mb-4 max-w-md">Drop your resume here to begin the cinematic mapping process. We accept PDF and DOCX formats.</p>
-                  
-                  <div 
-                      onDragEnter={handleDrag}
-                      onDragLeave={handleDrag}
-                      onDragOver={handleDrag}
-                      onDrop={handleDrop}
-                      className={`w-full max-w-md h-64 max-md:h-48 border-2 border-dashed rounded-3xl-card max-md:rounded-2xl-card flex flex-col items-center justify-center transition-colors cursor-pointer ${dragActive ? 'border-[#037BB5] bg-pastel-blue/30' : 'border-gray-300 hover:border-gray-400 bg-gray-50'}`}
-                      onClick={() => document.getElementById('file-upload').click()}
-                  >
-                      <span className="text-4xl mb-4">📄</span>
-                      <span className="font-archivo font-medium text-dark-charcoal text-lg">Click to browse or drag & drop</span>
-                      <span className="font-archivo text-dark-slate text-sm mt-2">Maximum file size: 5MB</span>
-                  </div>
 
-                  <input 
-                    type="file" 
-                    id="file-upload" 
-                    onChange={(e) => {
-                        handleFileChange(e);
-                        setIsModalOpen(false);
-                    }} 
-                    accept=".pdf,.docx" 
-                    className="hidden" 
-                  />
+                  {!activePathway ? (
+                    /* ── MENU: START YOUR JOURNEY ── */
+                    <>
+                      <h2 id="modal-title" className="font-archivo font-semibold text-4xl max-md:text-2xl text-dark-charcoal mb-4 max-md:mb-2 text-balance leading-tight">Start Your Journey</h2>
+                      <p className="font-archivo text-lg max-md:text-base text-dark-slate mb-8 max-md:mb-6 max-w-md text-balance">Choose how you want us to analyze your career and discover your cinematic twin.</p>
+                      
+                      <div className="grid grid-cols-2 max-md:grid-cols-1 gap-4 w-full max-w-lg mb-4">
+                        
+                        {/* Box 1: Document Upload */}
+                        <button 
+                          onClick={() => setActivePathway('upload')}
+                          className="flex flex-col items-start gap-2 p-5 rounded-2xl-card border border-gray-200 bg-white hover:border-dark-charcoal/30 hover:shadow-md transition-all text-left group"
+                        >
+                          <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">📄</span>
+                          <span className="font-archivo font-semibold text-dark-charcoal text-lg">Document Upload</span>
+                          <span className="font-archivo text-dark-slate text-xs leading-relaxed">Drop your Resume, LinkedIn PDF, or Cover Letter here.</span>
+                        </button>
+
+                        {/* Box 2: Guided Wizard */}
+                        <button 
+                          onClick={() => setActivePathway('wizard')}
+                          className="flex flex-col items-start gap-2 p-5 rounded-2xl-card border border-gray-200 bg-white hover:border-dark-charcoal/30 hover:shadow-md transition-all text-left group"
+                        >
+                          <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">🧭</span>
+                          <span className="font-archivo font-semibold text-dark-charcoal text-lg">Guided Wizard</span>
+                          <span className="font-archivo text-dark-slate text-xs leading-relaxed">Step-by-step role, skills, and mood selector.</span>
+                        </button>
+
+                      </div>
+                    </>
+                  ) : activePathway === 'upload' ? (
+                    /* ── PATHWAY A: UPLOAD ── */
+                    <>
+                      <h2 id="modal-title" className="font-archivo font-semibold text-4xl max-md:text-2xl text-dark-charcoal mb-4 max-md:mb-2">Document Parser</h2>
+                      <p className="font-archivo text-lg max-md:text-base text-dark-slate mb-8 max-md:mb-4 max-w-md">Drop your resume, LinkedIn PDF, or Cover Letter here.</p>
+                      
+                      <div 
+                          onDragEnter={handleDrag}
+                          onDragLeave={handleDrag}
+                          onDragOver={handleDrag}
+                          onDrop={handleDrop}
+                          className={`w-full max-w-md h-64 max-md:h-48 border-2 border-dashed rounded-3xl-card max-md:rounded-2xl-card flex flex-col items-center justify-center transition-colors cursor-pointer ${dragActive ? 'border-[#037BB5] bg-pastel-blue/30' : 'border-gray-300 hover:border-gray-400 bg-gray-50'}`}
+                          onClick={() => document.getElementById('file-upload').click()}
+                      >
+                          <span className="text-4xl mb-4">📄</span>
+                          <span className="font-archivo font-medium text-dark-charcoal text-lg">Click or Drag & Drop</span>
+                          <span className="font-archivo text-dark-slate text-sm mt-2">PDF & DOCX maximum 5MB</span>
+                      </div>
+
+                      <input 
+                        type="file" 
+                        id="file-upload" 
+                        onChange={(e) => {
+                            handleFileChange(e);
+                            setIsModalOpen(false);
+                        }} 
+                        accept=".pdf,.docx,.txt" 
+                        className="hidden" 
+                      />
+                      
+                      <button onClick={() => setActivePathway(null)} className="mt-8 max-md:mt-5 font-archivo text-dark-slate hover:text-dark-charcoal text-sm underline underline-offset-4 decoration-dark-slate/30 hover:decoration-dark-charcoal/50 transition-colors">
+                        ← Back to Menu
+                      </button>
+                    </>
+                  ) : activePathway === 'wizard' ? (
+                    /* ── PATHWAY D: GUIDED WIZARD ── */
+                    <>
+                      {/* Step indicator */}
+                      <div className="flex items-center gap-2 mb-8 max-md:mb-5">
+                        {[0,1,2,3].map(i => (
+                          <div key={i} className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === wizardStep ? 'bg-dark-charcoal scale-125' : i < wizardStep ? 'bg-dark-charcoal/40' : 'bg-dark-charcoal/15'}`} />
+                        ))}
+                      </div>
+
+                      {/* Step 0: Role & Industry */}
+                      {wizardStep === 0 && (
+                        <div className="wizard-step w-full max-w-md">
+                          <h2 className="font-archivo font-semibold text-3xl max-md:text-2xl text-dark-charcoal mb-2">What do you do?</h2>
+                          <p className="font-archivo text-dark-slate mb-6 max-md:mb-4">Tell us your role and industry.</p>
+                          
+                          <input
+                            type="text"
+                            placeholder="e.g. Product Manager, Nurse, Chef..."
+                            value={wizardData.jobTitle}
+                            onChange={(e) => setWizardData(prev => ({...prev, jobTitle: e.target.value}))}
+                            className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 font-archivo text-dark-charcoal text-base placeholder:text-dark-slate/50 focus:outline-none focus:ring-2 focus:ring-dark-charcoal/20 focus:border-dark-charcoal/30 transition-all mb-4"
+                          />
+
+                          <select
+                            value={wizardData.industry}
+                            onChange={(e) => setWizardData(prev => ({...prev, industry: e.target.value, selectedSkills: []}))}
+                            className="w-full px-5 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 font-archivo text-dark-charcoal text-base focus:outline-none focus:ring-2 focus:ring-dark-charcoal/20 focus:border-dark-charcoal/30 transition-all appearance-none cursor-pointer"
+                          >
+                            <option value="" disabled>Select your industry</option>
+                            {INDUSTRIES.map(ind => (
+                              <option key={ind} value={ind}>{ind}</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
+                      {/* Step 1: Career Stage */}
+                      {wizardStep === 1 && (
+                        <div className="wizard-step w-full max-w-md">
+                          <h2 className="font-archivo font-semibold text-3xl max-md:text-2xl text-dark-charcoal mb-2">Where are you in your career?</h2>
+                          <p className="font-archivo text-dark-slate mb-6 max-md:mb-4">This helps us tailor recommendations to your experience level.</p>
+                          
+                          <div className="grid grid-cols-3 gap-3">
+                            {CAREER_STAGES.map(stage => (
+                              <button
+                                key={stage.id}
+                                onClick={() => setWizardData(prev => ({...prev, careerStage: stage.id}))}
+                                className={`flex flex-col items-center gap-2 p-5 max-md:p-3 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${wizardData.careerStage === stage.id ? 'border-dark-charcoal bg-dark-charcoal/5 scale-[1.02]' : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100'}`}
+                              >
+                                <span className="text-3xl max-md:text-2xl">{stage.emoji}</span>
+                                <span className="font-archivo font-semibold text-dark-charcoal text-sm">{stage.label}</span>
+                                <span className="font-archivo text-dark-slate text-xs">{stage.desc}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Step 2: Skills */}
+                      {wizardStep === 2 && (
+                        <div className="wizard-step w-full max-w-lg">
+                          <h2 className="font-archivo font-semibold text-3xl max-md:text-2xl text-dark-charcoal mb-2">Select your skills</h2>
+                          <p className="font-archivo text-dark-slate mb-6 max-md:mb-4">Pick the ones that match your experience. <span className="text-dark-charcoal font-medium">({wizardData.selectedSkills.length} selected)</span></p>
+                          
+                          <div className="flex flex-wrap gap-2 max-h-[280px] max-md:max-h-[220px] overflow-y-auto pr-1 justify-center">
+                            {availableSkills.map(skill => (
+                              <button
+                                key={skill}
+                                onClick={() => toggleSkill(skill)}
+                                className={`px-4 py-2 rounded-full font-archivo text-sm transition-all duration-150 border ${wizardData.selectedSkills.includes(skill) ? 'bg-dark-charcoal text-white border-dark-charcoal' : 'bg-white text-dark-charcoal border-gray-200 hover:border-gray-400 hover:bg-gray-50'}`}
+                              >
+                                {wizardData.selectedSkills.includes(skill) && '✓ '}{skill}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Step 3: Vibe */}
+                      {wizardStep === 3 && (
+                        <div className="wizard-step w-full max-w-lg">
+                          <h2 className="font-archivo font-semibold text-3xl max-md:text-2xl text-dark-charcoal mb-2">What's your vibe?</h2>
+                          <p className="font-archivo text-dark-slate mb-6 max-md:mb-4">Pick the work personality that fits you best.</p>
+                          
+                          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-3">
+                            {VIBE_OPTIONS.map(v => (
+                              <button
+                                key={v.id}
+                                onClick={() => setWizardData(prev => ({...prev, vibe: v.id}))}
+                                className={`flex items-start gap-3 p-4 rounded-2xl border-2 text-left transition-all duration-200 cursor-pointer ${wizardData.vibe === v.id ? 'border-dark-charcoal bg-dark-charcoal/5 scale-[1.01]' : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100'}`}
+                              >
+                                <span className="text-2xl mt-0.5 shrink-0">{v.emoji}</span>
+                                <div>
+                                  <div className="font-archivo font-semibold text-dark-charcoal text-sm">{v.title}</div>
+                                  <div className="font-archivo text-dark-slate text-xs mt-0.5">{v.desc}</div>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Step 4: Mood */}
+                      {wizardStep === 4 && (
+                        <div className="wizard-step w-full max-w-lg">
+                          <h2 className="font-archivo font-semibold text-3xl max-md:text-2xl text-dark-charcoal mb-2">What's your mood?</h2>
+                          <p className="font-archivo text-dark-slate mb-6 max-md:mb-4">How do you want to feel after watching?</p>
+                          
+                          <div className="grid grid-cols-3 max-md:grid-cols-1 gap-3">
+                            {['Inspired', 'Validated', 'Cautioned'].map(m => (
+                              <button
+                                key={m}
+                                onClick={() => setWizardData(prev => ({...prev, mood: m}))}
+                                className={`flex flex-col items-center gap-2 p-5 rounded-2xl-card border-2 transition-all duration-200 cursor-pointer text-left ${wizardData.mood === m ? 'border-dark-charcoal bg-dark-charcoal/5 scale-[1.02]' : 'border-gray-200 bg-white hover:border-gray-400 hover:bg-gray-50'}`}
+                              >
+                                <span className="font-archivo font-semibold text-dark-charcoal text-lg">{m}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Wizard navigation buttons */}
+                      <div className="flex items-center gap-3 mt-8 max-md:mt-5 w-full max-w-md justify-between">
+                        <button
+                          onClick={handleWizardBack}
+                          className="px-6 py-3 rounded-full font-archivo font-medium text-dark-charcoal bg-gray-100 hover:bg-gray-200 transition-colors"
+                        >
+                          {wizardStep === 0 ? '← Start Over' : '← Back'}
+                        </button>
+                        <button
+                          onClick={handleWizardNext}
+                          disabled={(wizardStep === 0 && (!wizardData.jobTitle.trim() || !wizardData.industry)) || (wizardStep === 1 && !wizardData.careerStage) || (wizardStep === 3 && !wizardData.vibe) || (wizardStep === 4 && !wizardData.mood)}
+                          className="px-8 py-3 rounded-full font-archivo font-semibold text-white bg-dark-charcoal hover:bg-dark-active disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg hover:scale-105 active:scale-95"
+                        >
+                          {wizardStep === 4 ? 'Get Recommendations' : 'Next →'}
+                        </button>
+                      </div>
+                    </>
+                  ) : activePathway === 'text' ? (
+                     /* ── PATHWAY B: THE VIBE CHECK ── */
+                     <>
+                        <h2 className="font-archivo font-semibold text-4xl max-md:text-2xl text-dark-charcoal mb-2">The Vibe Check</h2>
+                        <p className="font-archivo text-dark-slate mb-8 max-md:mb-6 max-w-md">What's your biggest challenge at work right now? Or describe your dream job in 3 words. Just vent—we'll figure out your movie.</p>
+                        
+                        <textarea
+                          placeholder="I'm feeling burnt out from managing people..."
+                          value={freeTextData}
+                          onChange={(e) => setFreeTextData(e.target.value)}
+                          className="w-full max-w-lg h-40 p-5 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-dark-charcoal/20 transition-all font-archivo text-base text-dark-charcoal resize-none mb-6"
+                        ></textarea>
+
+                        <div className="flex items-center gap-3 w-full max-w-lg justify-between mt-2">
+                          <button onClick={() => setActivePathway(null)} className="px-6 py-3 rounded-full font-archivo font-medium text-dark-charcoal bg-gray-100 hover:bg-gray-200 transition-colors">
+                            ← Menu
+                          </button>
+                          <button 
+                            onClick={processPrompt}
+                            disabled={freeTextData.trim().length < 10}
+                            className="px-8 py-3 rounded-full font-archivo font-semibold text-white bg-dark-charcoal hover:bg-dark-active disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg hover:scale-105 active:scale-95"
+                          >
+                            Analyze Vibe
+                          </button>
+                        </div>
+                    </>
+                  ) : null}
               </div>
           </div>
       )}
@@ -465,6 +796,8 @@ function App() {
       )}
 
       <main id="main-content" role="main">
+          {currentView === 'home' ? (
+            <>
           
           {/* Hero Section */}
           <div className="h-screen min-h-[500px] max-h-[1440px] p-4 max-md:p-2 flex flex-col pt-24 max-lg:pt-20 max-md:pt-14">
@@ -746,7 +1079,56 @@ function App() {
               </div>
           </section>
 
-              {/* Features Matrix */}
+              {/* Articles Section */}
+          <section id="articles" className="bg-white px-4 max-md:px-2 pb-4 max-md:pb-2 mt-12 max-md:mt-6">
+              <div className="mx-auto max-w-[1440px] flex flex-col gap-8 max-md:gap-6">
+                  <div className="px-12 max-md:px-6">
+                      <span className="font-gabarito font-semibold text-[18px] tracking-wide-kicker uppercase text-dark-charcoal/60 mb-2 block">Deep Dives</span>
+                      <h2 className="font-archivo font-semibold text-[48px] max-md:text-[32px] text-dark-charcoal leading-tight">Cinematic Strategy</h2>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 max-[1200px]:grid-cols-2 max-lg:grid-cols-1 gap-6 max-md:gap-4 px-12 max-md:px-4">
+                      {ARTICLES.map(article => (
+                          <div 
+                              key={article.id} 
+                              onClick={() => {
+                                  setActiveArticle(article);
+                                  setReadingProgress(0);
+                                  document.body.style.overflow = 'hidden';
+                              }}
+                              className="group relative h-[400px] max-md:h-[320px] rounded-4xl-card max-[1200px]:rounded-3xl-card max-md:rounded-2xl-card overflow-clip bg-pastel-beige cursor-pointer transition-transform duration-500 hover:scale-[0.99] active:scale-[0.97]"
+                          >
+                              {/* Background Accent */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent z-[1]"></div>
+                              <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-pastel-coral/20 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-150 z-[1]"></div>
+                                                            <div className="relative z-[2] p-8 max-md:p-6 h-full flex flex-col justify-end">
+                                  <div className="flex items-center justify-between mb-4">
+                                      <span className="inline-block px-3 py-1 rounded-full bg-dark-charcoal text-white font-gabarito font-bold text-[10px] uppercase tracking-wider w-fit">
+                                          {article.tag}
+                                      </span>
+                                      <div className="flex items-center gap-3 text-[12px] font-archivo font-medium text-dark-slate/60">
+                                          <span>{article.date}</span>
+                                          <span className="w-1 h-1 rounded-full bg-dark-slate/30"></span>
+                                          <span>{article.readingTime}</span>
+                                      </div>
+                                  </div>
+                                  <h3 className="font-archivo font-bold text-2xl max-md:text-xl text-dark-charcoal leading-[1.2] mb-3 group-hover:text-[#037BB5] transition-colors line-clamp-3">
+                                      {article.title}
+                                  </h3>
+                                  <p className="font-archivo text-base text-dark-slate line-clamp-3 opacity-70 group-hover:opacity-100 transition-opacity mb-4">
+                                      {article.summary}
+                                  </p>
+                                  <div className="mt-auto flex items-center gap-2 font-archivo font-bold text-[14px] text-dark-charcoal group-hover:translate-x-2 transition-transform">
+                                      Read Analysis <span>→</span>
+                                  </div>
+                              </div>
+                          </div>
+                      ))}
+                  </div>
+              </div>
+          </section>
+
+          {/* Features Matrix */}
           <section className="bg-white px-4 max-md:px-2 pb-4 max-md:pb-2 mt-12 max-md:mt-6">
               <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-2">
                   
@@ -874,7 +1256,220 @@ function App() {
               </section>
             </>
           )}
+        </>
+      ) : (
+        /* Articles Library "Page" View */
+        <div className="min-h-screen pt-40 px-6 max-md:pt-28 bg-white animate-fade-in">
+                <div className="mx-auto max-w-[1440px]">
+                    <div className="flex flex-col gap-12 mb-20 px-12 max-md:px-4">
+                        <button 
+                            onClick={() => setCurrentView('home')}
+                            className="flex items-center gap-2 font-archivo font-bold text-[#037BB5] hover:translate-x-[-4px] transition-transform w-fit"
+                        >
+                            <span>←</span> Back to Home
+                        </button>
+                        <div>
+                            <span className="font-gabarito font-semibold text-[20px] tracking-wide-kicker uppercase text-dark-charcoal/60 mb-4 block">Knowledge Library</span>
+                            <h1 className="font-archivo font-bold text-[clamp(48px,8vw,100px)] text-dark-charcoal leading-[1.05] tracking-tight-title max-w-4xl">
+                                Cinematic Strategy & Cultural Codes
+                            </h1>
+                            <p className="font-archivo text-2xl max-md:text-lg text-dark-slate mt-8 max-w-2xl leading-relaxed">
+                                A curated database of collections engineered to broaden your worldview and sharpen your strategic instincts.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 max-[1200px]:grid-cols-2 max-lg:grid-cols-1 gap-8 max-md:gap-4 px-12 max-md:px-4 pb-40">
+                        {ARTICLES.map(article => (
+                            <div 
+                                key={article.id} 
+                                onClick={() => {
+                                    setActiveArticle(article);
+                                    setReadingProgress(0);
+                                    document.body.style.overflow = 'hidden';
+                                }}
+                                className="group relative min-h-[540px] max-md:min-h-[440px] rounded-4xl-card max-[1200px]:rounded-3xl-card max-md:rounded-2xl-card overflow-clip bg-pastel-beige cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98]"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent z-[1]"></div>
+                                <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-pastel-coral/20 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-150 z-[1]"></div>
+                                
+                                <div className="relative z-[2] p-8 max-md:p-6 h-full flex flex-col justify-end">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <span className="inline-block px-3 py-1 rounded-full bg-dark-charcoal text-white font-gabarito font-bold text-[10px] uppercase tracking-wider w-fit">
+                                            {article.tag}
+                                        </span>
+                                        <div className="flex items-center gap-2 text-[11px] font-archivo font-bold text-dark-slate/40">
+                                            <span>{article.readingTime}</span>
+                                        </div>
+                                    </div>
+                                    <h3 className="font-archivo font-bold text-[24px] text-dark-charcoal leading-[1.2] mb-6 group-hover:text-[#037BB5] transition-colors line-clamp-2">
+                                        {article.title}
+                                    </h3>
+                                    
+                                    {/* Structured Movie List */}
+                                    <div className="flex flex-col gap-4 mb-8">
+                                        {article.featuredMovies?.map((movie, mIdx) => (
+                                            <div key={mIdx} className="flex gap-3 leading-tight group/item">
+                                                <span className="font-archivo font-medium text-dark-charcoal/30 text-[14px] pt-[2px]">
+                                                    {mIdx + 1}.
+                                                </span>
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="flex items-baseline gap-2">
+                                                        <span className="font-archivo font-bold text-[16px] text-dark-charcoal group-hover/item:text-[#037BB5] transition-colors">
+                                                            {movie.title} ({movie.year})
+                                                        </span>
+                                                    </div>
+                                                    <p className="font-archivo text-[13px] text-dark-slate opacity-70 leading-normal">
+                                                        {movie.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Action Hint */}
+                                    <div className="mt-auto pt-4 border-t border-dark-charcoal/5 flex items-center justify-between pointer-events-none">
+                                        <span className="font-archivo font-bold text-[12px] text-dark-charcoal tracking-wider uppercase opacity-30 group-hover:opacity-100 transition-opacity">
+                                            Deep Dive Analysis
+                                        </span>
+                                        <div className="w-8 h-8 rounded-full bg-dark-charcoal text-white flex items-center justify-center group-hover:bg-[#037BB5] transition-colors">
+                                            <span>→</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+          )}
       </main>
+
+      {/* Article Reader Modal */}
+      {activeArticle && (
+          <div 
+              className="fixed inset-0 z-[4000] flex items-center justify-center p-4 max-md:p-0 bg-dark-charcoal/40 backdrop-blur-xl animate-fade-in"
+              onClick={() => {
+                  setActiveArticle(null);
+                  document.body.style.overflow = '';
+              }}
+          >
+              <div 
+                  className="relative bg-white w-full max-w-4xl h-[90vh] max-md:h-screen rounded-[40px] max-md:rounded-none flex flex-col overflow-hidden animate-scale-in shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)]" 
+                  role="dialog" 
+                  aria-labelledby="article-title"
+                  onClick={(e) => e.stopPropagation()}
+              >
+                  {/* Reading Progress Bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gray-100 z-[20]">
+                      <div 
+                        className="h-full bg-gradient-to-r from-pastel-coral via-[#037BB5] to-pastel-blue transition-all duration-300 ease-out shadow-[0_0_10px_rgba(3,123,181,0.5)]"
+                        style={{ width: `${readingProgress}%` }}
+                      ></div>
+                  </div>
+
+                  {/* Close Header (Sticky) */}
+                  <div className="sticky top-0 z-10 flex justify-between items-center px-12 py-8 max-md:px-6 max-md:py-4 bg-white/90 backdrop-blur-md border-b border-black/5">
+                      <div className="flex flex-col">
+                        <span className="font-gabarito font-bold text-[12px] uppercase tracking-widest text-[#037BB5] mb-1">
+                            {activeArticle.tag}
+                        </span>
+                        <span className="font-archivo text-[12px] text-dark-slate/60 font-medium">
+                            {activeArticle.date} • {activeArticle.readingTime}
+                        </span>
+                      </div>
+                      <button 
+                          onClick={() => {
+                              setActiveArticle(null);
+                              document.body.style.overflow = '';
+                          }} 
+                          autoFocus
+                          aria-label="Close article" 
+                          className="w-12 h-12 bg-dark-charcoal tooltip-trigger hover:scale-105 active:scale-95 rounded-full flex items-center justify-center transition-all shadow-lg"
+                      >
+                          <svg width="18" height="18" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path d="M13 1L1 13M1 1L13 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                      </button>
+                  </div>
+
+                  {/* Scrollable Content */}
+                  <div 
+                    className="flex-1 overflow-y-auto px-12 pb-32 max-md:px-6 max-md:pb-16 custom-reader-scrollbar"
+                    onScroll={(e) => {
+                        const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+                        const progress = (scrollTop / (scrollHeight - clientHeight)) * 100;
+                        setReadingProgress(progress);
+                    }}
+                  >
+                      <article className="max-w-[720px] mx-auto pt-16 max-md:pt-10">
+                          <h1 id="article-title" className="font-archivo font-bold text-[clamp(40px,5vw,72px)] text-dark-charcoal leading-[1.05] tracking-tight-title mb-12 max-md:mb-8">
+                              {activeArticle.title}
+                          </h1>
+                          
+                          <div className="article-content-body font-archivo text-[20px] max-md:text-[18px] text-dark-slate leading-[1.8] space-y-8 tracking-normal">
+                              {activeArticle.content.split('\n').map((para, i) => {
+                                  const trimmed = para.trim();
+                                  if (!trimmed) return null;
+                                  
+                                  // Improved Markdown Parsing
+                                  if (trimmed.startsWith('### ')) {
+                                      return <h3 key={i} className="font-archivo font-bold text-4xl text-dark-charcoal pt-10 pb-4 border-b border-black/5 mb-6">{trimmed.replace('### ', '')}</h3>;
+                                  }
+                                  if (trimmed.startsWith('#### ')) {
+                                      return <h4 key={i} className="font-archivo font-bold text-2xl text-dark-charcoal pt-8 pb-3">{trimmed.replace('#### ', '')}</h4>;
+                                  }
+                                  if (trimmed.startsWith('• ') || trimmed.startsWith('* ')) {
+                                      return <li key={i} className="ml-6 pl-2 list-disc marker:text-pastel-coral">{trimmed.substring(2)}</li>;
+                                  }
+                                  // Handle numbered lists (e.g. "1. Item")
+                                  const numberedMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+                                  if (numberedMatch) {
+                                      const listContent = numberedMatch[2];
+                                      const formattedList = listContent.split('**').map((part, idx) =>
+                                        idx % 2 === 1 ? <strong key={idx} className="text-dark-charcoal font-bold">{part}</strong> : part
+                                      );
+                                      return <li key={i} className="ml-6 pl-2 list-decimal marker:text-dark-charcoal/40 marker:font-bold">{formattedList}</li>;
+                                  }
+                                  if (trimmed.startsWith('> ')) {
+                                      return <blockquote key={i} className="pl-6 border-l-4 border-pastel-coral/40 py-4 italic text-2xl max-md:text-xl text-dark-charcoal/80 bg-pastel-coral/5 rounded-r-2xl my-8">
+                                          {trimmed.replace('> ', '').replace('**', '').replace('**', '')}
+                                      </blockquote>;
+                                  }
+                                  if (trimmed === '---') {
+                                      return <hr key={i} className="my-12 border-black/5" />;
+                                  }
+                                  
+                                  // Handle bold segments and inline markers
+                                  const formattedPara = trimmed.split('**').map((part, index) => 
+                                      index % 2 === 1 ? <strong key={index} className="text-dark-charcoal font-bold">{part}</strong> : part
+                                  );
+
+                                  return <p key={i} className="opacity-90">{formattedPara}</p>;
+                              })}
+                          </div>
+                          
+                          {/* Article Footer */}
+                          <div className="mt-24 pt-12 border-t border-black/5 flex flex-col items-center text-center gap-6">
+                              <div className="w-16 h-1 bg-gradient-to-r from-pastel-peach to-pastel-blue rounded-full"></div>
+                              <p className="font-archivo font-medium text-dark-slate/60 italic text-lg">
+                                  End of analysis. Elevate your perspective, then take action.
+                              </p>
+                              <button 
+                                onClick={() => {
+                                    setActiveArticle(null);
+                                    document.body.style.overflow = '';
+                                }}
+                                className="px-10 py-4 bg-dark-charcoal text-white rounded-full font-archivo font-bold hover:scale-105 transition-all shadow-xl"
+                              >
+                                  Return to Library
+                              </button>
+                          </div>
+                      </article>
+                  </div>
+              </div>
+          </div>
+      )}
     </>
   )
 }

@@ -216,3 +216,61 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 
+/* Custom Scrollbar for Reader */
+.custom-reader-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-reader-scrollbar::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+.custom-reader-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 100px;
+}
+.custom-reader-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Typography for Long-form Reading */
+.article-content-body {
+  font-feature-settings: "ss01", "ss02", "cv01";
+  text-rendering: optimizeLegibility;
+}
+
+.article-content-body p {
+  margin-bottom: 2rem;
+  line-height: 1.85;
+  color: #334155;
+}
+
+.article-content-body h3 {
+  letter-spacing: -0.02em;
+}
+
+.article-content-body blockquote p {
+  margin-bottom: 0;
+}
+
+.article-content-body li {
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

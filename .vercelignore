@@ -1,0 +1,13 @@
+# Ignore heavy backend and distribution files
+backend/
+images/
+*.zip
+*.bat
+package_app.py
+setup_wizard.bat
+check_db.py
+check_json.js
+test_parser.js
+.venv/
+venv/
+__pycache__/

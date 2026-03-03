@@ -1,0 +1,461 @@
+==========================================================================================
+   500-PROFILE RECOMMENDATION ACCURACY TEST
+==========================================================================================
+
+INDUSTRY DETECTION ACCURACY: 406/484 (83.9%)
+PROFILES WITH NO SKILLS FOUND: 135
+UNIQUE MOVIES RECOMMENDED: 174 / 6750
+
+------------------------------------------------------------
+DETECTED INDUSTRY DISTRIBUTION:
+------------------------------------------------------------
+  Healthcare                     62 profiles
+  Technology                     53 profiles
+  Engineering                    35 profiles
+  Education                      35 profiles
+  Finance                        33 profiles
+  Law                            33 profiles
+  General                        30 profiles
+  Media & Entertainment          29 profiles
+  Arts & Design                  25 profiles
+  Energy & Utilities             21 profiles
+  Real Estate                    21 profiles
+  Consulting                     18 profiles
+  Non-Profit & Social Impact     18 profiles
+  Transportation & Logistics     17 profiles
+  Retail & E-Commerce            16 profiles
+  Sports & Fitness               16 profiles
+  Agriculture & Food             13 profiles
+  Hospitality & Tourism          9 profiles
+
+------------------------------------------------------------
+INDUSTRY MISMATCHES (78):
+------------------------------------------------------------
+  Cybersecurity Analyst               Expected: Technology                Got: Consulting
+  QA Engineer                         Expected: Technology                Got: General
+  UX Researcher                       Expected: Technology                Got: General
+  Systems Administrator               Expected: Technology                Got: General
+  Network Engineer                    Expected: Technology                Got: General
+  Data Engineer                       Expected: Technology                Got: General
+  Site Reliability Engineer           Expected: Technology                Got: General
+  CTO                                 Expected: Technology                Got: Consulting
+  Embedded Systems Engineer           Expected: Engineering               Got: Technology
+  Actuary                             Expected: Finance                   Got: Healthcare
+  Quantitative Analyst                Expected: Finance                   Got: Technology
+  Human Rights Lawyer                 Expected: Law                       Got: Non-Profit & Social Impact
+  Research Scientist                  Expected: Education                 Got: Healthcare
+  Video Editor                        Expected: Media & Entertainment     Got: Education
+  Environmental Engineer              Expected: Engineering               Got: Energy & Utilities
+  Nuclear Engineer                    Expected: Engineering               Got: Energy & Utilities
+  Industrial Designer                 Expected: Arts & Design             Got: Engineering
+  Animator                            Expected: Arts & Design             Got: Law
+  Mortgage Broker                     Expected: Real Estate               Got: Finance
+  Food Scientist                      Expected: Agriculture & Food        Got: Healthcare
+  Fleet Manager                       Expected: Transportation & Logistics Got: Real Estate
+  Event Planner                       Expected: Hospitality & Tourism     Got: Retail & E-Commerce
+  Restaurant Owner                    Expected: Hospitality & Tourism     Got: Real Estate
+  Marine Biologist                    Expected: Education                 Got: General
+  Astronomer                          Expected: Education                 Got: Engineering
+  Meteorologist                       Expected: Education                 Got: Media & Entertainment
+  Barista                             Expected: Hospitality & Tourism     Got: Arts & Design
+  Real Estate Lawyer                  Expected: Law                       Got: Real Estate
+  Patent Examiner                     Expected: Law                       Got: Technology
+  Audiologist                         Expected: Healthcare                Got: Technology
+  Oceanographer                       Expected: Education                 Got: General
+  Cosmologist                         Expected: Education                 Got: General
+  Senior Cybersecurity Analyst        Expected: Technology                Got: Consulting
+  Senior QA Engineer                  Expected: Technology                Got: General
+  Senior UX Researcher                Expected: Technology                Got: General
+  Senior Systems Administrator        Expected: Technology                Got: General
+  Senior Network Engineer             Expected: Technology                Got: General
+  Senior Data Engineer                Expected: Technology                Got: General
+  Senior Site Reliability Engineer    Expected: Technology                Got: General
+  Senior CTO                          Expected: Technology                Got: Consulting
+  Senior Embedded Systems Engineer    Expected: Engineering               Got: Technology
+  Senior Actuary                      Expected: Finance                   Got: Healthcare
+  Senior Quantitative Analyst         Expected: Finance                   Got: Technology
+  Senior Human Rights Lawyer          Expected: Law                       Got: Non-Profit & Social Impact
+  Senior Research Scientist           Expected: Education                 Got: Healthcare
+  Senior Video Editor                 Expected: Media & Entertainment     Got: Education
+  Senior Environmental Engineer       Expected: Engineering               Got: Energy & Utilities
+  Senior Nuclear Engineer             Expected: Engineering               Got: Energy & Utilities
+  Senior Industrial Designer          Expected: Arts & Design             Got: Engineering
+  Senior Animator                     Expected: Arts & Design             Got: Law
+  Senior Mortgage Broker              Expected: Real Estate               Got: Finance
+  Senior Food Scientist               Expected: Agriculture & Food        Got: Healthcare
+  Senior Fleet Manager                Expected: Transportation & Logistics Got: Real Estate
+  Senior Event Planner                Expected: Hospitality & Tourism     Got: Retail & E-Commerce
+  Senior Restaurant Owner             Expected: Hospitality & Tourism     Got: Real Estate
+  Junior Cybersecurity Analyst        Expected: Technology                Got: Consulting
+  Junior QA Engineer                  Expected: Technology                Got: General
+  Junior UX Researcher                Expected: Technology                Got: General
+  Junior Systems Administrator        Expected: Technology                Got: General
+  Junior Network Engineer             Expected: Technology                Got: General
+  Junior Data Engineer                Expected: Technology                Got: General
+  Junior Site Reliability Engineer    Expected: Technology                Got: General
+  Junior CTO                          Expected: Technology                Got: Consulting
+  Junior Embedded Systems Engineer    Expected: Engineering               Got: Technology
+  Junior Actuary                      Expected: Finance                   Got: Healthcare
+  Junior Quantitative Analyst         Expected: Finance                   Got: Technology
+  Junior Human Rights Lawyer          Expected: Law                       Got: Non-Profit & Social Impact
+  Junior Research Scientist           Expected: Education                 Got: Healthcare
+  Junior Video Editor                 Expected: Media & Entertainment     Got: Education
+  Junior Environmental Engineer       Expected: Engineering               Got: Energy & Utilities
+  Junior Nuclear Engineer             Expected: Engineering               Got: Energy & Utilities
+  Junior Industrial Designer          Expected: Arts & Design             Got: Engineering
+  Junior Animator                     Expected: Arts & Design             Got: Law
+  Junior Mortgage Broker              Expected: Real Estate               Got: Finance
+  Junior Food Scientist               Expected: Agriculture & Food        Got: Healthcare
+  Junior Fleet Manager                Expected: Transportation & Logistics Got: Real Estate
+  Junior Event Planner                Expected: Hospitality & Tourism     Got: Retail & E-Commerce
+  Junior Restaurant Owner             Expected: Hospitality & Tourism     Got: Real Estate
+
+------------------------------------------------------------
+PROFILES WITH ZERO SKILLS DETECTED (135):
+------------------------------------------------------------
+  - Mobile App Developer
+  - Systems Administrator
+  - Technical Writer
+  - Network Engineer
+  - Nurse Practitioner
+  - Dentist
+  - Pediatrician
+  - Immigration Lawyer
+  - Judge
+  - Public Defender
+  - High School Teacher
+  - College Admissions Counselor
+  - Journalist
+  - Video Editor
+  - Music Producer
+  - Mechanical Engineer
+  - Chemical Engineer
+  - Structural Engineer
+  - Interior Designer
+  - Fashion Designer
+  - Ceramicist
+  - Sports Coach
+  - Personal Trainer
+  - Property Manager
+  - Real Estate Developer
+  - Farm Manager
+  - Wind Turbine Technician
+  - Airline Pilot
+  - Urban Planner
+  - Maritime Captain
+  - NGO Director
+  - Social Worker
+  - Fundraiser
+  - Management Consultant
+  - Travel Agent
+  - FBI Agent
+  - Diplomat
+  - City Manager
+  - Archaeologist
+  - Marine Biologist
+  - Astronomer
+  - Meteorologist
+  - Translator
+  - Firefighter
+  - Paramedic
+  - Plumber
+  - Welder
+  - Carpenter
+  - Pastry Chef
+  - Locksmith
+  - Insurance Agent
+  - Patent Examiner
+  - Chiropractor
+  - Geologist
+  - Oceanographer
+  - Cosmologist
+  - Zookeeper
+  - Senior Mobile App Developer
+  - Senior Systems Administrator
+  - Senior Technical Writer
+  - Senior Network Engineer
+  - Senior Nurse Practitioner
+  - Senior Dentist
+  - Senior Pediatrician
+  - Senior Immigration Lawyer
+  - Senior Judge
+  - Senior Public Defender
+  - Senior High School Teacher
+  - Senior College Admissions Counselor
+  - Senior Journalist
+  - Senior Video Editor
+  - Senior Music Producer
+  - Senior Mechanical Engineer
+  - Senior Chemical Engineer
+  - Senior Structural Engineer
+  - Senior Interior Designer
+  - Senior Fashion Designer
+  - Senior Ceramicist
+  - Senior Sports Coach
+  - Senior Personal Trainer
+  - Senior Property Manager
+  - Senior Real Estate Developer
+  - Senior Farm Manager
+  - Senior Wind Turbine Technician
+  - Senior Airline Pilot
+  - Senior Urban Planner
+  - Senior Maritime Captain
+  - Senior NGO Director
+  - Senior Social Worker
+  - Senior Fundraiser
+  - Senior Management Consultant
+  - Senior Travel Agent
+  - Senior FBI Agent
+  - Senior Diplomat
+  - Senior City Manager
+  - Senior Archaeologist
+  - Junior Mobile App Developer
+  - Junior Systems Administrator
+  - Junior Technical Writer
+  - Junior Network Engineer
+  - Junior Nurse Practitioner
+  - Junior Dentist
+  - Junior Pediatrician
+  - Junior Immigration Lawyer
+  - Junior Judge
+  - Junior Public Defender
+  - Junior High School Teacher
+  - Junior College Admissions Counselor
+  - Junior Journalist
+  - Junior Video Editor
+  - Junior Music Producer
+  - Junior Mechanical Engineer
+  - Junior Chemical Engineer
+  - Junior Structural Engineer
+  - Junior Interior Designer
+  - Junior Fashion Designer
+  - Junior Ceramicist
+  - Junior Sports Coach
+  - Junior Personal Trainer
+  - Junior Property Manager
+  - Junior Real Estate Developer
+  - Junior Farm Manager
+  - Junior Wind Turbine Technician
+  - Junior Airline Pilot
+  - Junior Urban Planner
+  - Junior Maritime Captain
+  - Junior NGO Director
+  - Junior Social Worker
+  - Junior Fundraiser
+  - Junior Management Consultant
+  - Junior Travel Agent
+  - Junior FBI Agent
+  - Junior Diplomat
+  - Junior City Manager
+  - Junior Archaeologist
+
+------------------------------------------------------------
+TOP 20 MOST RECOMMENDED MOVIES (out of 2420 total recommendations):
+------------------------------------------------------------
+  Big Fat Liar                                     123 times (25.4%)
+  Teeth and Blood                                  90 times (18.6%)
+  Repo Men                                         76 times (15.7%)
+  Life                                             70 times (14.5%)
+  The Painted Veil                                 69 times (14.3%)
+  IZombie                                          66 times (13.6%)
+  The Social Network                               62 times (12.8%)
+  Flyboys                                          58 times (12.0%)
+  Weird Wonders of the World                       45 times (9.3%)
+  Diagnosis                                        44 times (9.1%)
+  Margin Call                                      41 times (8.5%)
+  Robotech                                         38 times (7.9%)
+  I Don't Know How She Does It                     38 times (7.9%)
+  Bandslam                                         36 times (7.4%)
+  Whiplash                                         35 times (7.2%)
+  Tip the Mouse                                    33 times (6.8%)
+  Hidden Figures                                   33 times (6.8%)
+  Project Mc²                                      32 times (6.6%)
+  Man vs Wild with Sunny Leone                     29 times (6.0%)
+  Knight and Day                                   29 times (6.0%)
+
+==========================================================================================
+SAMPLE RESULTS BY INDUSTRY (first profile per industry):
+==========================================================================================
+
+  Frontend Developer [Technology] Stage=Entry-level Vibe=Pragmatic Builder
+    Skills: 1 | Tech: 3 | Top Score: 0.563
+    Recommendations:
+      1. Big Fat Liar
+      2. Repo Men
+      3. Robotech
+      4. Project Mc²
+      5. Beast Legends
+
+  Cybersecurity Analyst [Consulting] Stage=Entry-level Vibe=Empathic Leader
+    Skills: 3 | Tech: 0 | Top Score: 0.468
+    Recommendations:
+      1. The Social Network
+      2. Sunshine State
+      3. The Salon
+      4. In Family We Trust
+      5. The Cookout
+
+  QA Engineer [General] Stage=Entry-level Vibe=Pragmatic Builder
+    Skills: 2 | Tech: 0 | Top Score: 0.450
+    Recommendations:
+      1. Man vs Wild with Sunny Leone
+      2. Knight and Day
+      3. Tip the Mouse
+      4. Luna Petunia
+      5. The Lion of Judah
+
+  Robotics Engineer [Engineering] Stage=Entry-level Vibe=Strategic Visionary
+    Skills: 4 | Tech: 0 | Top Score: 0.417
+    Recommendations:
+      1. Hidden Figures
+      2. Black Mirror
+      3. The Social Network
+      4. Repo Men
+      5. Engineering Girls
+
+  Cardiologist [Healthcare] Stage=Senior Vibe=Strategic Visionary
+    Skills: 1 | Tech: 0 | Top Score: 0.609
+    Recommendations:
+      1. Jane The Virgin
+      2. Life
+      3. The Painted Veil
+      4. IZombie
+      5. Weird Wonders of the World
+
+  Investment Banker [Finance] Stage=Entry-level Vibe=Pragmatic Builder
+    Skills: 1 | Tech: 0 | Top Score: 0.546
+    Recommendations:
+      1. Industry (TV Series Concept)
+      2. Margin Call
+      3. I Don't Know How She Does It
+      4. The Last Shot
+      5. Enron: The Smartest Guys in the Room
+
+  Tax Attorney [Law] Stage=Senior Vibe=Pragmatic Builder
+    Skills: 1 | Tech: 0 | Top Score: 0.548
+    Recommendations:
+      1. Clear and Present Danger
+      2. Black Earth Rising
+      3. Apocalypse Now
+      4. A Man for All Seasons
+      5. 15 Minutes
+
+  Human Rights Lawyer [Non-Profit & Social Impact] Stage=Entry-level Vibe=Empathic Leader
+    Skills: 1 | Tech: 0 | Top Score: 0.391
+    Recommendations:
+      1. The Social Network
+      2. The Windsors
+      3. My Big Fat Greek Wedding
+      4. Martin Lawrence Live: Runteldat
+      5. Bandslam
+
+  University Professor [Education] Stage=Entry-level Vibe=Pragmatic Builder
+    Skills: 1 | Tech: 0 | Top Score: 0.360
+    Recommendations:
+      1. Big Fat Liar
+      2. Teeth and Blood
+      3. Whiplash
+      4. Fake or Fortune?
+      5. Yankee
+
+  Film Director [Media & Entertainment] Stage=Senior Vibe=Creative Free-Spirit
+    Skills: 2 | Tech: 0 | Top Score: 0.401
+    Recommendations:
+      1. Standing Ovation
+      2. Vai Anitta
+      3. DreamWorks Spooky Stories: Volume 2
+      4. Scott Walker: 30 Century Man
+      5. Bandslam
+
+  Environmental Engineer [Energy & Utilities] Stage=Entry-level Vibe=Analytical Stoic
+    Skills: 1 | Tech: 0 | Top Score: 0.270
+    Recommendations:
+      1. The Eighties
+      2. Origins Collection
+      3. Forensic Files
+      4. Nazi Mega Weapons
+      5. Regression
+
+  Store Manager [Retail & E-Commerce] Stage=Senior Vibe=Pragmatic Builder
+    Skills: 2 | Tech: 0 | Top Score: 0.352
+    Recommendations:
+      1. Flyboys
+      2. Across the Universe
+      3. Spirit Riding Free: Pony Tales
+      4. Restless
+      5. Octopussy
+
+  Graphic Designer [Arts & Design] Stage=Entry-level Vibe=Pragmatic Builder
+    Skills: 4 | Tech: 2 | Top Score: 0.352
+    Recommendations:
+      1. Big Fat Liar
+      2. Teeth and Blood
+      3. Sword Art Online
+      4. La Guerre du feu
+      5. Mortal Kombat
+
+  Sports Coach [Sports & Fitness] Stage=Senior Vibe=The Relentless Hustler
+    Skills: 0 | Tech: 0 | Top Score: 0.352
+    Recommendations:
+      1. Black Water Transit
+      2. Engineering Girls
+      3. 7 Days Out
+      4. Top Grier
+      5. Last Action Hero
+
+  Real Estate Agent [Real Estate] Stage=Entry-level Vibe=The Relentless Hustler
+    Skills: 1 | Tech: 0 | Top Score: 0.380
+    Recommendations:
+      1. The Founder
+      2. Nueve Reinas
+      3. Sleepers
+      4. Harvard Man
+      5. City By The Sea
+
+  Farm Manager [Agriculture & Food] Stage=Mid-Level Vibe=Analytical Stoic
+    Skills: 0 | Tech: 0 | Top Score: 0.352
+    Recommendations:
+      1. The Making of Frozen Planet
+      2. Oceans
+      3. Sicko
+      4. Diagnosis
+      5. Flatliners
+
+  Logistics Coordinator [Transportation & Logistics] Stage=Mid-Level Vibe=Analytical Stoic
+    Skills: 2 | Tech: 0 | Top Score: 0.351
+    Recommendations:
+      1. The Making of Frozen Planet
+      2. Oceans
+      3. Silicon Cowboys
+      4. WHAT / IF
+      5. They Came Together
+
+  Hotel General Manager [Hospitality & Tourism] Stage=Senior Vibe=The Relentless Hustler
+    Skills: 1 | Tech: 0 | Top Score: 0.351
+    Recommendations:
+      1. Black Water Transit
+      2. Spotless
+      3. Skylines
+      4. Footprints in the Sand
+      5. Dirty John
+
+------------------------------------------------------------
+VIBE DISTRIBUTION:
+------------------------------------------------------------
+  Pragmatic Builder              282 profiles (58.3%)
+  Analytical Stoic               68 profiles (14.0%)
+  Empathic Leader                44 profiles (9.1%)
+  Creative Free-Spirit           35 profiles (7.2%)
+  Strategic Visionary            30 profiles (6.2%)
+  The Relentless Hustler         25 profiles (5.2%)
+
+------------------------------------------------------------
+CAREER STAGE DISTRIBUTION:
+------------------------------------------------------------
+  Entry-level          264 profiles (54.5%)
+  Senior               194 profiles (40.1%)
+  Mid-Level            26 profiles (5.4%)
+
+==========================================================================================
+TEST COMPLETE
+==========================================================================================
