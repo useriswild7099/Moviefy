@@ -808,15 +808,15 @@ function App() {
                       <img src="/assets/cloud.webp" alt="Ethereal floating background clouds" fetchPriority="high" decoding="async" className="w-full h-auto animate-cloud-drift" />
                   </div>
                   
-                  <div className="relative z-[10] flex flex-col items-center justify-center text-center opacity-0 scale-110 hero-content px-4 w-full">
-                      <span className="inline-block px-5 py-2 mb-10 max-md:mb-6 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg font-gabarito font-bold text-[14px] max-md:text-[12px] tracking-[0.15em] uppercase text-white hover:bg-white/20 transition-colors">
+                  <div className="relative z-[10] flex flex-col items-center justify-center text-center opacity-0 scale-110 hero-content px-4 max-sm:px-2 w-full">
+                      <span className="inline-block px-5 py-2 max-md:px-4 max-md:py-1.5 mb-10 max-md:mb-6 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg font-gabarito font-bold text-[14px] max-md:text-[11px] tracking-[0.15em] max-md:tracking-[0.1em] uppercase text-white hover:bg-white/20 transition-colors">
                           AI-Powered Trajectory
                       </span>
-                      <h1 className="font-archivo font-semibold text-[clamp(48px,10vh,128px)] leading-[1.12] tracking-tight-title hero-title-gradient w-full pb-4">
+                      <h1 className="font-archivo font-semibold text-[clamp(40px,8vw,128px)] max-md:leading-[1.05] leading-[1.12] tracking-tight-title hero-title-gradient w-full pb-4">
                           Find the perfect<br/>movies for your<br/>career growth
                       </h1>
                       
-                      <div className="mt-16 max-md:mt-10 max-w-2xl w-full flex flex-col items-center gap-4 relative z-[10]">
+                      <div className="mt-16 max-md:mt-8 max-sm:mt-6 max-w-2xl w-full flex flex-col items-center gap-4 relative z-[10]">
                         {error && <p className="text-red-600 bg-red-100/80 px-4 py-2 rounded-full font-archivo font-medium">{error}</p>}
                         {loading && (
                             <div className="flex flex-col items-center gap-4">
@@ -1133,21 +1133,21 @@ function App() {
               <div className="mx-auto max-w-[1440px] grid grid-cols-12 max-lg:grid-cols-1 gap-4 max-md:gap-2">
                   
                   {/* Antidote Card (Span 5) */}
-                  <div className="col-span-5 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-md:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-beige group">
+                  <div className="col-span-5 max-lg:col-span-1 min-h-[560px] md:h-[640px] xl:h-[760px] rounded-4xl-card max-xl:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-beige group">
                       <div className="absolute right-[8%] top-[44%] w-[107%] aspect-square pointer-events-none group-hover:scale-105 transition-transform duration-700">
                           <div className="w-full h-full rounded-full bg-pastel-coral mix-blend-multiply opacity-80"></div>
                       </div>
-                      <div className="min-h-[220px] max-md:min-h-0 p-12 max-[1200px]:p-8 max-md:p-6 flex flex-col gap-4 max-md:gap-2 flex-shrink-0 z-[4]">
-                          <h2 className="font-archivo font-semibold text-[48px] max-[1200px]:text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[1.05] tracking-tight-title text-dark-charcoal stagger-text">Curated, not random</h2>
-                          <p className="font-archivo font-normal text-[20px] max-[1200px]:text-[18px] max-md:text-[16px] leading-[1.5] tracking-normal text-dark-slate stagger-text">We read between the lines of your resume. Stop scrolling through algorithmic slop and start watching content deeply personalized to the skills you actually need to build.</p>
+                      <div className="min-h-[220px] max-md:min-h-0 p-12 max-xl:p-8 max-md:p-6 flex flex-col gap-4 max-md:gap-2 flex-shrink-0 z-[4]">
+                          <h2 className="font-archivo font-semibold text-[clamp(28px,4vw,48px)] leading-[1.05] tracking-tight-title text-dark-charcoal ">Curated, not random</h2>
+                          <p className="font-archivo font-normal text-[clamp(16px,2vw,20px)] leading-[1.5] tracking-normal text-dark-slate ">We read between the lines of your resume. Stop scrolling through algorithmic slop and start watching content deeply personalized to the skills you actually need to build.</p>
                       </div>
                       <div className="flex-1 flex items-start justify-center min-h-0 z-[2] p-8 max-md:p-4">
-                            <img src="/assets/the_score.jpg" loading="lazy" decoding="async" alt="The Score interface highlighting cinematic metrics" className="w-full h-auto max-sm:max-h-[300px] object-contain object-top pt-4 max-md:pt-0 drop-shadow-2xl rounded-3xl shadow-2xl" />
+                            <img src="/assets/the_score.jpg" loading="lazy" decoding="async" alt="The Score interface highlighting cinematic metrics" className="w-full h-auto max-w-[400px] object-contain object-top pt-4 max-md:pt-0 drop-shadow-2xl rounded-3xl shadow-2xl" />
                       </div>
                   </div>
 
                   {/* Fundamental Skills (Span 7) */}
-                  <div className="col-span-7 max-lg:col-span-1 h-[760px] max-[1200px]:h-[560px] max-md:h-auto rounded-4xl-card max-[1200px]:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-lavender group">
+                  <div className="col-span-7 max-lg:col-span-1 min-h-[560px] md:h-[640px] xl:h-[760px] rounded-4xl-card max-xl:rounded-3xl-card max-lg:rounded-2xl-card max-md:rounded-xl-card overflow-clip relative flex flex-col max-lg:flex-row max-sm:flex-col bg-pastel-lavender group">
                       <div className="min-h-[220px] max-md:min-h-0 p-12 max-[1200px]:p-8 max-md:p-6 flex flex-col gap-4 max-md:gap-2 flex-shrink-0 z-[4]">
                           <h2 className="font-archivo font-semibold text-[48px] max-[1200px]:text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[1.05] tracking-tight-title text-dark-charcoal stagger-text">Manifest your trajectory</h2>
                           <p className="font-archivo font-normal text-[20px] max-[1200px]:text-[18px] max-md:text-[16px] leading-[1.5] tracking-normal text-dark-slate stagger-text">We match your professional constraints with the protagonists who broke through them. It's not just a movie recommendation; it's a blueprint for your next milestone.</p>
