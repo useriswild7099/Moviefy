@@ -538,21 +538,21 @@ function App() {
                         {/* Box 1: Document Upload */}
                         <button 
                           onClick={() => setActivePathway('upload')}
-                          className="flex flex-col items-start gap-2 p-5 rounded-2xl-card border border-gray-200 bg-white hover:border-dark-charcoal/30 hover:shadow-md transition-all text-left group"
+                          className="flex flex-col items-start gap-2 p-6 rounded-3xl-card bg-white neu-white neu-transition hover:translate-y-[-2px] text-left group"
                         >
                           <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">📄</span>
                           <span className="font-archivo font-semibold text-dark-charcoal text-lg">Document Upload</span>
-                          <span className="font-archivo text-dark-slate text-xs leading-relaxed">Drop your Resume, LinkedIn PDF, or Cover Letter here.</span>
+                          <span className="font-archivo text-dark-slate text-[13px] leading-relaxed">Drop your Resume, LinkedIn PDF, or Cover Letter here.</span>
                         </button>
 
                         {/* Box 2: Guided Wizard */}
                         <button 
                           onClick={() => setActivePathway('wizard')}
-                          className="flex flex-col items-start gap-2 p-5 rounded-2xl-card border border-gray-200 bg-white hover:border-dark-charcoal/30 hover:shadow-md transition-all text-left group"
+                          className="flex flex-col items-start gap-2 p-6 rounded-3xl-card bg-white neu-white neu-transition hover:translate-y-[-2px] text-left group"
                         >
                           <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">🧭</span>
                           <span className="font-archivo font-semibold text-dark-charcoal text-lg">Guided Wizard</span>
-                          <span className="font-archivo text-dark-slate text-xs leading-relaxed">Step-by-step role, skills, and mood selector.</span>
+                          <span className="font-archivo text-dark-slate text-[13px] leading-relaxed">Step-by-step role, skills, and mood selector.</span>
                         </button>
 
                       </div>
