@@ -4,6 +4,7 @@ import { ARTICLES } from './data/articles.js'
 import { extractText, parseResume } from './utils/parser'
 import { generateRecommendations } from './utils/recommender'
 import { buildProfileFromPrompt, getSkillsForIndustry, VIBE_OPTIONS, CAREER_STAGES, INDUSTRIES } from './utils/promptBuilder'
+import { IconFileText, IconCompass } from '@tabler/icons-react'
 
 const LOADING_QUOTES = [
   "If your content is rotting your brain, it's time for a digital diet.",
@@ -540,7 +541,7 @@ function App() {
                           onClick={() => setActivePathway('upload')}
                           className="flex flex-col items-start gap-2 p-6 rounded-3xl-card bg-white neu-white neu-transition hover:translate-y-[-2px] text-left group"
                         >
-                          <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">📄</span>
+                          <IconFileText size={36} stroke={1.5} className="mb-1 text-dark-charcoal/80 group-hover:scale-110 group-hover:text-[#037BB5] transition-all" />
                           <span className="font-archivo font-semibold text-dark-charcoal text-lg">Document Upload</span>
                           <span className="font-archivo text-dark-slate text-[13px] leading-relaxed">Drop your Resume, LinkedIn PDF, or Cover Letter here.</span>
                         </button>
@@ -550,7 +551,7 @@ function App() {
                           onClick={() => setActivePathway('wizard')}
                           className="flex flex-col items-start gap-2 p-6 rounded-3xl-card bg-white neu-white neu-transition hover:translate-y-[-2px] text-left group"
                         >
-                          <span className="text-3xl mb-1 group-hover:scale-110 transition-transform">🧭</span>
+                          <IconCompass size={36} stroke={1.5} className="mb-1 text-dark-charcoal/80 group-hover:scale-110 group-hover:text-[#037BB5] transition-all" />
                           <span className="font-archivo font-semibold text-dark-charcoal text-lg">Guided Wizard</span>
                           <span className="font-archivo text-dark-slate text-[13px] leading-relaxed">Step-by-step role, skills, and mood selector.</span>
                         </button>
@@ -944,6 +945,16 @@ function App() {
                                    </div>
                                )}
                            </div>
+
+                           {/* Free Streaming Link */}
+                           {recommendations.length > 0 && (
+                               <div className="mt-8 bg-pastel-yellow/30 rounded-2xl-card max-md:rounded-xl-card p-6 border border-pastel-yellow/50 text-center neu-beige">
+                                   <p className="font-archivo text-lg max-md:text-base text-dark-charcoal">
+                                       Want to stream these for free? <br />
+                                       Check out <a href="https://movhub.ws/" target="_blank" rel="noopener noreferrer" className="font-bold text-[#037BB5] hover:underline hover:text-[#025a85] transition-colors inline-block mt-2 tracking-wide">MovHub.ws 🍿</a>
+                                   </p>
+                               </div>
+                           )}
                       </div>
 
                   </div>
