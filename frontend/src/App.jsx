@@ -4,7 +4,7 @@ import { ARTICLES } from './data/articles.js'
 import { extractText, parseResume } from './utils/parser'
 import { generateRecommendations } from './utils/recommender'
 import { buildProfileFromPrompt, getSkillsForIndustry, VIBE_OPTIONS, CAREER_STAGES, INDUSTRIES } from './utils/promptBuilder'
-import { IconFileText, IconCompass } from '@tabler/icons-react'
+import { FileText, Compass } from 'lucide-react'
 
 const LOADING_QUOTES = [
   "If your content is rotting your brain, it's time for a digital diet.",
@@ -541,7 +541,7 @@ function App() {
                           onClick={() => setActivePathway('upload')}
                           className="flex flex-col items-start gap-2 p-6 rounded-3xl-card bg-white neu-white neu-transition hover:translate-y-[-2px] text-left group"
                         >
-                          <IconFileText size={36} stroke={1.5} className="mb-1 text-dark-charcoal/80 group-hover:scale-110 group-hover:text-[#037BB5] transition-all" />
+                          <FileText size={36} strokeWidth={1.5} className="mb-1 text-dark-charcoal/80 group-hover:scale-110 group-hover:text-[#037BB5] transition-all" />
                           <span className="font-archivo font-semibold text-dark-charcoal text-lg">Document Upload</span>
                           <span className="font-archivo text-dark-slate text-[13px] leading-relaxed">Drop your Resume, LinkedIn PDF, or Cover Letter here.</span>
                         </button>
@@ -551,7 +551,7 @@ function App() {
                           onClick={() => setActivePathway('wizard')}
                           className="flex flex-col items-start gap-2 p-6 rounded-3xl-card bg-white neu-white neu-transition hover:translate-y-[-2px] text-left group"
                         >
-                          <IconCompass size={36} stroke={1.5} className="mb-1 text-dark-charcoal/80 group-hover:scale-110 group-hover:text-[#037BB5] transition-all" />
+                          <Compass size={36} strokeWidth={1.5} className="mb-1 text-dark-charcoal/80 group-hover:scale-110 group-hover:text-[#037BB5] transition-all" />
                           <span className="font-archivo font-semibold text-dark-charcoal text-lg">Guided Wizard</span>
                           <span className="font-archivo text-dark-slate text-[13px] leading-relaxed">Step-by-step role, skills, and mood selector.</span>
                         </button>
@@ -572,7 +572,7 @@ function App() {
                           className={`w-full max-w-md h-64 max-md:h-48 border-2 border-dashed rounded-3xl-card max-md:rounded-2xl-card flex flex-col items-center justify-center transition-colors cursor-pointer ${dragActive ? 'border-[#037BB5] bg-pastel-blue/30' : 'border-gray-300 hover:border-gray-400 bg-gray-50'}`}
                           onClick={() => document.getElementById('file-upload').click()}
                       >
-                          <span className="text-4xl mb-4">📄</span>
+                          <FileText size={48} strokeWidth={1.5} className="mb-4 text-dark-charcoal/60" />
                           <span className="font-archivo font-medium text-dark-charcoal text-lg">Click or Drag & Drop</span>
                           <span className="font-archivo text-dark-slate text-sm mt-2">PDF & DOCX maximum 5MB</span>
                       </div>
