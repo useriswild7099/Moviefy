@@ -183,11 +183,11 @@ class Recommender {
       vibeSignal = Math.min(matchCount / 2, 1.0);
 
       const compositeScore = (
-        (0.40 * contentSimilarity) +
+        (0.35 * contentSimilarity) +
         (0.20 * industrySignal) +
-        (0.20 * vibeSignal) +
+        (0.15 * vibeSignal) +
         (0.10 * careerStageSignal) +
-        (0.10 * (movie.educational_value_score / 10 || 0.5))
+        (0.20 * (movie.educational_value_score / 10 || 0.5))
       );
 
       return {
@@ -201,10 +201,14 @@ class Recommender {
     return scoredMovies
       .sort((a, b) => {
         // Primary sort: Match Score
-        if (b.match_score !== a.match_score) {
+        if (Math.abs(b.match_score - a.match_score) > 0.001) {
             return b.match_score - a.match_score;
         }
-        // Secondary sort (Tie-breaker): Randomize slightly to keep results fresh for identical scores
+        // Secondary sort (Tie-breaker): Favor higher educational value (fame/quality proxy)
+        if (b.educational_value_score !== a.educational_value_score) {
+            return b.educational_value_score - a.educational_value_score;
+        }
+        // Tertiary: slight randomness for variety
         return Math.random() - 0.5;
       })
       .slice(0, topN);
