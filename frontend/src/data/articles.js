@@ -584,5 +584,110 @@ A celebration of love's messiness, betrayal, and loneliness.
       { title: "Babylon", year: "2022", description: "The wild, sonic explosion of early Hollywood's chaos." }
     ],
     content: `Listening to the story.`
+  },
+  {
+    id: "succession-syndrome",
+    title: "The 'Succession' Syndrome: Navigating Toxic Leadership Without Losing Your Soul",
+    tag: "Corporate",
+    date: "Mar 6, 2026",
+    readingTime: "8 min read",
+    summary: "How to survive and thrive when your management structure resembles a brutal HBO drama.",
+    featuredMovies: [
+      { title: "Succession", year: "2018", description: "The gold standard of corporate backstabbing and extreme wealth." },
+      { title: "Wall Street", year: "1987", description: "A young broker's seduction into the world of illegal insider trading." },
+      { title: "The Devil Wears Prada", year: "2006", description: "Navigating impossible demands from an absolute perfectionist." }
+    ],
+    content: `
+Toxic leadership isn't just a plot device; it's a reality for millions of professionals. The Roys of *Succession* might be an exaggeration, but the underlying power dynamics—manipulation, gaslighting, and shifting alliances—play out in boardrooms every day.
+
+### The Strategy:
+• **Establish Boundaries**: Like Andy in *The Devil Wears Prada*, you must know where your job ends and your soul begins.
+• **Recognize the Game**: Don't mistake erratic behavior for strategy.
+• **Plan Your Exit**: If the culture demands moral compromise (*Wall Street*), the only winning move is to leave on your own terms.
+    `
+  },
+  {
+    id: "moneyball-boardrooms",
+    title: "From 'Moneyball' to Boardrooms: Building Conviction When the Data Looks Crazy",
+    tag: "Data Strategy",
+    date: "Mar 7, 2026",
+    readingTime: "7 min read",
+    summary: "What Billy Beane teaches us about standing firm when your data contradicts conventional wisdom.",
+    featuredMovies: [
+      { title: "Moneyball", year: "2011", description: "Revolutionizing a legacy industry with ruthless statistical analysis." },
+      { title: "The Big Short", year: "2015", description: "Betting against the entire global economy because the math says so." },
+      { title: "Tetris", year: "2023", description: "The high-stakes legal and geopolitical battle for a game-changing product." }
+    ],
+    content: `
+Dissent is uncomfortable. When you hold data that suggests the entire industry is doing it wrong, you won't be hailed as a visionary—you'll be called crazy. *Moneyball* and *The Big Short* are masterclasses in holding the line.
+
+### The Playbook:
+1. **Trust the Math over the 'Gut'**: Legacy systems rely on intuition. Disruptors rely on evidence.
+2. **Expect Institutional Pushback**: The system is designed to reject change. You are fighting momentum, not just people.
+3. **Patience is the Ultimate Leverage**: If your thesis is correct, you just have to survive long enough for reality to catch up.
+    `
+  },
+  {
+    id: "whiplash-effect",
+    title: "The 'Whiplash' Effect: The Fine Line Between High Performance and Burnout",
+    tag: "Mental Health",
+    date: "Mar 8, 2026",
+    readingTime: "9 min read",
+    summary: "Examining the toxic pursuit of perfection and how to sustain ambition without destroying yourself.",
+    featuredMovies: [
+      { title: "Whiplash", year: "2014", description: "The brutal, bloody cost of reaching the absolute peak of your craft." },
+      { title: "Black Swan", year: "2010", description: "When the demands of perfection shatter personal identity." },
+      { title: "Uncut Gems", year: "2019", description: "The adrenaline-fueled addiction to high-stakes risk." }
+    ],
+    content: `
+We idolize the grind, but cinema often warns us of its true cost. The relentless pursuit of greatness shown in *Whiplash* asks a profound question: Is the masterpiece worth the monster you become?
+
+### Managing the Drive:
+• **Redefine Success**: If achievement requires total self-destruction, the definition of success is flawed.
+• **The Mentor Trap**: Abuse is not a prerequisite for excellence. Reject the Terrence Fletchers of the corporate world.
+• **Pacing for the Marathon**: True career longevity requires the discipline to stop when you are ahead, avoiding the fatal crash of *Uncut Gems*.
+    `
+  },
+  {
+    id: "cinematic-empathy",
+    title: "Cinematic Empathy: What 'Arrival' Teaches Us About Cross-Functional Communication",
+    tag: "Leadership",
+    date: "Mar 9, 2026",
+    readingTime: "6 min read",
+    summary: "Deconstructing the barriers of communication when different teams speak entirely different languages.",
+    featuredMovies: [
+      { title: "Arrival", year: "2016", description: "A linguist must decode an alien language before global paranoia triggers war." },
+      { title: "Lost in Translation", year: "2003", description: "Finding profound connection amidst total cultural and linguistic isolation." },
+      { title: "12 Angry Men", year: "1957", description: "The impossible task of aligning twelve different worldviews in one room." }
+    ],
+    content: `
+Ever tried to explain an engineering roadmap to a marketing team? Or a finance budget to product designers? It can feel like communicating with aliens. *Arrival* is the ultimate metaphor for cross-functional communication.
+
+### Communication Frameworks:
+1. **Find the Baseline**: Dr. Banks started with "Human." When teams clash, find the shared objective first.
+2. **Translate, Don't Broadcast**: You must learn the vocabulary of your stakeholders. Empathy is a translation exercise.
+3. **De-escalate Paranoia**: Misunderstanding breeds fear. Clear, transparent communication prevents organizational siloing.
+    `
+  },
+  {
+    id: "art-of-the-pivot",
+    title: "The Art of the Pivot: Reinventing Your Career Through the Lens of the Hero's Journey",
+    tag: "Growth",
+    date: "Mar 10, 2026",
+    readingTime: "8 min read",
+    summary: "How to navigate the terrifying liminal space between who you were and who you are becoming.",
+    featuredMovies: [
+      { title: "Spider-Man: Into the Spider-Verse", year: "2018", description: "A masterclass in taking the leap of faith into a new identity." },
+      { title: "The Matrix", year: "1999", description: "Waking up from the comfortable illusion to embrace a harder reality." },
+      { title: "Chef", year: "2014", description: "Leaving the prestige of fine dining to rediscover passion in a food truck." }
+    ],
+    content: `
+A career pivot feels like jumping off a building and hoping you learn to fly before you hit the ground. It is the literal execution of the Hero's Journey—leaving the known world to conquer the unknown.
+
+### Executing the Pivot:
+• **The Leap of Faith**: As Miles Morales learns, you can't guarantee success. Sometimes, you just have to jump.
+• **Swallow the Red Pill**: Acknowledging that your current path is a dead end is the most painful, but necessary, first step.
+• **Downsize to Upscale**: Like *Chef*, sometimes stepping away from prestige is the only way to reclaim your actual passion and set yourself up for long-term fulfillment.
+    `
   }
 ];

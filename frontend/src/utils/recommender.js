@@ -1,6 +1,31 @@
 import movieData from '../data/movies.json';
 
 /**
+ * Maps the 17 detailed user profile industries to the broader categories
+ * found in the movies.json database. This ensures the industry matching signal works.
+ */
+export const INDUSTRY_ALIASES = {
+  "Technology": ["Technology, Software", "General Professional", "Business, Management"],
+  "Healthcare": ["Healthcare, Medicine", "General Professional", "Science, Activism"],
+  "Finance": ["Business, Management", "General Professional"],
+  "Law": ["Law Enforcement, Legal", "General Professional", "Military, Defense"],
+  "Education": ["Arts, Education", "General Professional"],
+  "Media & Entertainment": ["Arts, Media", "Arts, Entertainment", "General Professional"],
+  "Engineering": ["Aerospace, Engineering, Management", "Technology, Software", "General Professional"],
+  "Retail & E-Commerce": ["Business, Management", "General Professional"],
+  "Sports & Fitness": ["General Professional"],
+  "Arts & Design": ["Arts, Media", "Arts, Entertainment", "Arts, Education", "General Professional"],
+  "Real Estate": ["Business, Management", "General Professional"],
+  "Agriculture & Food": ["General Professional"],
+  "Energy & Utilities": ["General Professional", "Science, Activism"],
+  "Transportation & Logistics": ["Business, Management", "General Professional"],
+  "Non-Profit & Social Impact": ["Science, Activism", "General Professional"],
+  "Consulting": ["Business, Management", "General Professional"],
+  "Hospitality & Tourism": ["General Professional"]
+};
+
+
+/**
  * A lightweight TF-IDF and Cosine Similarity engine for the browser.
  */
 
@@ -157,8 +182,13 @@ class Recommender {
       
       // Additional Signals (Heuristics)
       let industrySignal = 0;
-      if (industry && movie.industry?.toLowerCase().includes(industry.toLowerCase())) {
-        industrySignal = 1.0;
+      if (industry && movie.industry) {
+        const aliases = INDUSTRY_ALIASES[industry] || [];
+        const movieInd = movie.industry.toLowerCase();
+        if (movieInd.includes(industry.toLowerCase()) || 
+            aliases.some(alias => movieInd.includes(alias.toLowerCase()))) {
+          industrySignal = 1.0;
+        }
       }
 
       let careerStageSignal = 0;

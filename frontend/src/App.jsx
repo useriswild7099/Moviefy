@@ -5,6 +5,7 @@ import { extractText, parseResume } from './utils/parser'
 import { generateRecommendations } from './utils/recommender'
 import { buildProfileFromPrompt, getSkillsForIndustry, VIBE_OPTIONS, CAREER_STAGES, INDUSTRIES } from './utils/promptBuilder'
 import { FileText, Compass } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 const LOADING_QUOTES = [
   "If your content is rotting your brain, it's time for a digital diet.",
@@ -495,6 +496,78 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>MOVIEFY | The Best AI Movie Recommendations App</title>
+        <link rel="canonical" href="https://moviefy-sigma.vercel.app/" />
+        <meta name="description" content="Find the best movies with MOVIEFY, an AI-powered movie recommendation engine tailored to your career trajectory. Upload your resume or use our guided wizard to get personalized movie and film suggestions." />
+        <meta property="og:title" content="MOVIEFY | The Best AI Movie Recommendations" />
+        <meta property="og:description" content="Brainwash your mind with the right content. AI-powered movie recommendations tailored to your career skills and growth." />
+        <meta property="og:url" content="https://moviefy-sigma.vercel.app/" />
+        <meta property="og:image" content="https://moviefy-sigma.vercel.app/assets/cloud.webp" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="MOVIEFY | Brainwash Your Mind" />
+        <meta name="twitter:description" content="AI-powered movie recommendation engine tailored to your career trajectory." />
+        <meta name="twitter:image" content="https://moviefy-sigma.vercel.app/assets/cloud.webp" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [{
+                "@type": "Question",
+                "name": "How does MOVIEFY recommend movies?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We scan your resume to extract skills, or use your inputs from our Guided Wizard, and map them to characters who overcome exactly what's next in your career."
+                }
+              }, {
+                "@type": "Question",
+                "name": "Why use MOVIEFY?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Your resume tells you where you've been. Excellent storytelling shows you where you can go. We curate your downtime to act as an incubator for your next breakthrough."
+                }
+              }]
+            }
+          `}
+        </script>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://moviefy-sigma.vercel.app/"
+              },{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Knowledge Library",
+                "item": "https://moviefy-sigma.vercel.app/#articles"
+              }]
+            }
+          `}
+        </script>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "MOVIEFY",
+              "url": "https://moviefy-sigma.vercel.app/",
+              "logo": "https://moviefy-sigma.vercel.app/assets/favicon-32.png",
+              "sameAs": [
+                "https://twitter.com/moviefy",
+                "https://linkedin.com/company/moviefy"
+              ]
+            }
+          `}
+        </script>
+      </Helmet>
+
       {/* Navbar */}
       <header className="fixed inset-x-0 top-0 z-[1000] p-8 max-md:p-4 pointer-events-none transition-transform duration-500 opacity-0 -translate-y-full" id="navbar">
           <div id="navbar-inner" className="relative mx-auto max-w-[1200px] flex justify-between items-center py-2 pr-2 pl-6 max-md:pl-4 bg-white/85 backdrop-blur-md rounded-full shadow-soft transition-all duration-300 pointer-events-auto">
@@ -594,9 +667,9 @@ function App() {
                     </>
                   ) : activePathway === 'wizard' ? (
                     /* ── PATHWAY D: GUIDED WIZARD ── */
-                    <>
+                    <section aria-label="Guided Wizard">
                       {/* Step indicator */}
-                      <div className="flex items-center gap-2 mb-8 max-md:mb-5">
+                      <div className="flex items-center gap-2 mb-8 max-md:mb-5" aria-hidden="true" role="progressbar" aria-valuenow={wizardStep} aria-valuemin="0" aria-valuemax="4">
                         {[0,1,2,3].map(i => (
                           <div key={i} className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === wizardStep ? 'bg-dark-charcoal scale-125' : i < wizardStep ? 'bg-dark-charcoal/40' : 'bg-dark-charcoal/15'}`} />
                         ))}
@@ -731,7 +804,7 @@ function App() {
                           {wizardStep === 4 ? 'Get Recommendations' : 'Next →'}
                         </button>
                       </div>
-                    </>
+                    </section>
                   ) : activePathway === 'text' ? (
                      /* ── PATHWAY B: THE VIBE CHECK ── */
                      <>
@@ -811,10 +884,10 @@ function App() {
                   
                   <div className="relative z-[10] flex flex-col items-center justify-center text-center opacity-0 scale-110 hero-content px-4 max-sm:px-2 w-full">
                       <span className="inline-block px-5 py-2 max-md:px-4 max-md:py-1.5 mb-10 max-md:mb-6 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg font-gabarito font-bold text-[14px] max-md:text-[11px] tracking-[0.15em] max-md:tracking-[0.1em] uppercase text-white hover:bg-white/20 transition-colors">
-                          AI-Powered Trajectory
+                          AI-Powered Movie Engine
                       </span>
                       <h1 className="font-archivo font-semibold text-[clamp(40px,8vw,128px)] max-md:leading-[1.05] leading-[1.12] tracking-tight-title hero-title-gradient w-full pb-4">
-                          Find the perfect<br/>movies for your<br/>career growth
+                          Find the best<br/>movies for your<br/>career growth
                       </h1>
                       
                       <div className="mt-16 max-md:mt-8 max-sm:mt-6 max-w-2xl w-full flex flex-col items-center gap-4 relative z-[10]">
@@ -1354,6 +1427,54 @@ function App() {
                 </div>
             </div>
           )}
+
+          {/* Semantic SEO Footer */}
+          <footer className="bg-dark-charcoal text-white/60 py-24 max-md:py-16 mt-24 border-t border-white/5">
+              <div className="mx-auto max-w-[1440px] px-12 max-md:px-6">
+                  <div className="grid grid-cols-4 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-12 mb-16">
+                      <div className="col-span-1 max-sm:col-span-1">
+                          <h4 className="font-gabarito font-bold text-2xl text-white mb-6">MOVIEFY</h4>
+                          <p className="font-archivo text-sm leading-relaxed max-w-[240px]">
+                              The best AI movie recommendation engine for career-driven individuals. Stop watching slop. Start building your future.
+                          </p>
+                      </div>
+                      <div>
+                          <h5 className="font-archivo font-bold text-white mb-6 uppercase tracking-wider text-xs">Product</h5>
+                          <ul className="flex flex-col gap-4 font-archivo text-sm">
+                              <li><a href="#" onClick={(e) => { e.preventDefault(); reset(); setCurrentView('home'); }} className="hover:text-white transition-colors">Home</a></li>
+                              <li><a href="#about" onClick={() => setCurrentView('home')} className="hover:text-white transition-colors">How it Works</a></li>
+                              <li><a href="#articles" onClick={(e) => { e.preventDefault(); setCurrentView('library'); }} className="hover:text-white transition-colors">Knowledge Library</a></li>
+                              <li><a href="#lessons" onClick={() => setCurrentView('home')} className="hover:text-white transition-colors">Lessons</a></li>
+                          </ul>
+                      </div>
+                      <div>
+                          <h5 className="font-archivo font-bold text-white mb-6 uppercase tracking-wider text-xs">Knowledge</h5>
+                          <ul className="flex flex-col gap-4 font-archivo text-sm">
+                              <li><a href="/Deep Dives" onClick={(e) => { e.preventDefault(); setCurrentView('library'); }} className="hover:text-white transition-colors">Deep Dives</a></li>
+                              <li><a href="/llms.txt" className="hover:text-white transition-colors">LLMs Guide</a></li>
+                              <li><a href="/ai.txt" className="hover:text-white transition-colors">AI Crawler Policy</a></li>
+                              <li><a href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</a></li>
+                          </ul>
+                      </div>
+                      <div>
+                          <h5 className="font-archivo font-bold text-white mb-6 uppercase tracking-wider text-xs">Legal</h5>
+                          <ul className="flex flex-col gap-4 font-archivo text-sm">
+                              <li><span className="cursor-not-allowed opacity-50">Terms of Service</span></li>
+                              <li><span className="cursor-not-allowed opacity-50">Privacy Policy</span></li>
+                              <li><span className="cursor-not-allowed opacity-50">Cookie Policy</span></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                      <p className="font-archivo text-xs">
+                          © 2026 MOVIEFY. Optimized for AI crawlers and ambitious minds.
+                      </p>
+                      <div className="flex gap-6 items-center">
+                          <span className="text-[10px] uppercase font-bold tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/10">Movie Engine v1.0.4</span>
+                      </div>
+                  </div>
+              </div>
+          </footer>
       </main>
 
       {/* Article Reader Modal */}
@@ -1371,6 +1492,40 @@ function App() {
                   aria-labelledby="article-title"
                   onClick={(e) => e.stopPropagation()}
               >
+                  <Helmet>
+                      <title>{activeArticle.title} | MOVIEFY Deep Dives</title>
+                      <link rel="canonical" href={`https://moviefy-sigma.vercel.app/#articles/${activeArticle.id}`} />
+                      <meta name="description" content={activeArticle.summary} />
+                      <meta property="og:title" content={`${activeArticle.title} | MOVIEFY`} />
+                      <meta property="og:description" content={activeArticle.summary} />
+                      <meta property="og:type" content="article" />
+                      <meta name="twitter:title" content={`${activeArticle.title} | MOVIEFY`} />
+                      <meta name="twitter:description" content={activeArticle.summary} />
+                      <script type="application/ld+json">
+                        {`
+                          {
+                            "@context": "https://schema.org",
+                            "@type": "BlogPosting",
+                            "headline": "${activeArticle.title}",
+                            "description": "${activeArticle.summary}",
+                            "datePublished": "2024-01-01T08:00:00+08:00",
+                            "author": {
+                              "@type": "Organization",
+                              "name": "MOVIEFY"
+                            },
+                            "publisher": {
+                              "@type": "Organization",
+                              "name": "MOVIEFY",
+                              "logo": {
+                                "@type": "ImageObject",
+                                "url": "https://moviefy-sigma.vercel.app/assets/favicon-32.png"
+                              }
+                            }
+                          }
+                        `}
+                      </script>
+                  </Helmet>
+
                   {/* Reading Progress Bar */}
                   <div className="absolute top-0 left-0 right-0 h-1.5 bg-gray-100 z-[20]">
                       <div 

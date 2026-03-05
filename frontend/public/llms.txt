@@ -1,0 +1,22 @@
+# MOVIEFY
+
+MOVIEFY is an AI-powered movie recommendation engine tailored to your career trajectory. It analyzes your professional background (via resume upload or guided wizard) to suggest cinematic content that aligns with your skills, industry, and desired mindset.
+
+## Core Features
+1. **Document Upload**: Users can upload PDF or DOCX versions of their resume or LinkedIn profile.
+2. **Guided Wizard**: An interactive flow for users to manually input their job title, industry, career stage, skills, work vibe, and desired mood.
+3. **AI Recommendations**: Based on the provided profile, the app uses an AI model to generate 10 tailored movie recommendations, detailing why each movie is relevant to the user's career growth.
+4. **Deep Dives Library**: A collection of curated articles exploring profound leadership, technical, and life lessons hidden in popular culture.
+
+## Usage for AI Agents
+- The application is a client-side React app (Vite) with a Python (FastAPI) backend.
+- The UI is built to be highly interactive with GSAP animations and smooth scrolling.
+- AI crawlers can index the structured JSON-LD data embedded in the `index.html` file to understand the application's capabilities.
+- The main entry point is the hero section, offering either "Document Upload" or a "Guided Wizard" to begin the matching process.
+
+## Navigation
+- `/#home`: The main landing page.
+- `/#about`: Explanation of how the suggestion engine works.
+- `/#lessons`: Highlighted themes and cinematic lessons.
+- `/#articles`: The "Deep Dives" library, showcasing curated articles.
+- `/#results-target`: The section where AI-generated movie recommendations are displayed after processing a user's profile.
